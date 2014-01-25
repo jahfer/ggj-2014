@@ -108,6 +108,7 @@ class PrismApp.Main
 			if prism?
 				hasCollided = true
 				@prism.move()
+				@player.setTexture(@playerTextures[2])
 				console.log("collision with prism!")
 
 	oneToManyCollisionCheck: (one, many) ->
