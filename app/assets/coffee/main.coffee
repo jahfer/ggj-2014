@@ -34,14 +34,12 @@ $ ->
 	minBound = new PIXI.Point(0,0)
 	maxBound = new PIXI.Point(0,0)
 
-	checkCollision = ->
-		hasCollided = false
+	updatePlayers = ->
 		for player in players
+			hasCollided = false
 			player.move()
 			if !hasCollided && oneToManyCollisionCheck(player, players)
-				hasCollided = true
-
-		return hasCollided
+				console.log("collision!")
 
 	oneToManyCollisionCheck = (one, many) ->
 			for collider in many
@@ -51,7 +49,7 @@ $ ->
 					radi = (one.width + collider.width) / 2
 					return true if (dx * dx + dy * dy) < (radi * radi)
 
-	updatePlayers = ->
+	getNewCenter = ->
 		center = new PIXI.Point(0,0)
 
 		for player in players
@@ -90,11 +88,9 @@ $ ->
 		PrismApp.stats.begin()
 		kd.tick()
 
-		newCenter = updatePlayers()
+		updatePlayers()
+		newCenter = getNewCenter()
 		scaleMap(newCenter)
-
-		if checkCollision()
-			true
 
 		requestAnimFrame(animate)
 		renderer.render(stage)
