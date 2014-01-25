@@ -6,7 +6,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		anchor = {x: anchorX, y: anchorY}
 		position = {x: posX, y: posY}
 		super(@texture, anchor, position)
-
+		@points = 0
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)
 		@bindKeys('W', 'S', 'A', 'D') if active

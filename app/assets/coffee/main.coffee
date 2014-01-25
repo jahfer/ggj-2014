@@ -10,7 +10,9 @@ class PrismApp.Main
 		@playerTextures = []
 		@ghostTextures = []
 		@obstacleTextures = []
-
+		textSample = new PIXI.Text("points", {font: "35px Arial", fill: "white", align: "left"})
+		textSample.position.x = 120
+		textSample.position.y = 120
 
 
 		assetsToLoader = ["images/prism_sprites.json"]
@@ -44,6 +46,7 @@ class PrismApp.Main
 		@world.addChild(@prism)
 
 		@stage.addChild(@world)
+		@stage.addChild(textSample)
 
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
