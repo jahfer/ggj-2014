@@ -1,0 +1,25 @@
+{
+  "name": "prism",
+  "version": "0.0.1",
+  "description": "MASSIVE AWESOME",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "node app/main.js"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "socket.io": "0.9.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jahfer/ggj-2014.git"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.1.x"
+  },
+  "author": "Kevin, Russell, Jahfer",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "5afac137747764d72d58be6ca16fee5bc79bd35f"
+}
