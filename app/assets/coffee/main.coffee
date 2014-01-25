@@ -46,20 +46,42 @@ class PrismApp.Main
 		hasCollided = false
 		player.move()
 
-		if !hasCollided && @oneToManyCollisionCheck(player, @obstacles.children)
-			hasCollided = true
-			player.position.x = 4
-			player.position.y = 100
-			console.log("collision with obstacle!")
+		if !hasCollided && !@isColliding
+			obstacle = @oneToManyCollisionCheck(player, @obstacles.children)
+			if obstacle?
+				hasCollided = true
 
-		if !hasCollided && @oneToOneCollisionCheck(player, @prism)
-			hasCollided = true
-			@prism.move()
-			console.log("collision with prism!")
+
+				console.log("collision with obstacle!")
+				if player.position.x > obstacle.position.x + obstacle.width
+					player.rotation *= -Math.PI
+					@isColliding = true
+					setTimeout (=> @isColliding = false), 50
+
+				else if player.position.y > obstacle.position.y + obstacle.height
+					player.rotation *= -Math.PI
+					@isColliding = true
+					setTimeout (=> @isColliding = false), 50
+
+				else if player.position.x < obstacle.position.x
+					player.rotation *= -Math.PI
+					@isColliding = true
+					setTimeout (=> @isColliding = false), 50
+
+				else if player.position.y < obstacle.position.y
+					player.rotation *= -Math.PI
+					@isColliding = true
+					setTimeout (=> @isColliding = false), 50
+
+			prism = @oneToOneCollisionCheck(player, @prism)
+			if prism?
+				hasCollided = true
+				@prism.move()
+				console.log("collision with prism!")
 
 	oneToManyCollisionCheck: (one, many) ->
 			for collider in many
-				return true if @oneToOneCollisionCheck(one, collider)
+				return collider if @oneToOneCollisionCheck(one, collider)
 
 	oneToOneCollisionCheck: (one, collider) ->
 		if one isnt collider && one.owner isnt collider && collider.owner isnt one
@@ -121,5 +143,5 @@ class PrismApp.Main
 		false
 
 $ ->
-	app = new PrismApp.Main()
-	requestAnimFrame(app.draw)
+	window.app = new PrismApp.Main()
+	requestAnimFrame(window.app.draw)

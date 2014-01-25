@@ -17,9 +17,9 @@ class PrismApp.Player extends PrismApp.Renderable
 
 		kd[down].down =>
 			if @velocity > 0
-	      @velocity -= 1
-      else if @velocity > -globals.MAX_VEL
-        @velocity -= 0.05
+			    @velocity -= 1
+		    else if @velocity > -globals.MAX_VEL
+		        @velocity -= 0.05
 
 		kd[left].down => @rotation -= 0.1
 		kd[right].down => @rotation += 0.1
