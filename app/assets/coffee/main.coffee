@@ -94,37 +94,37 @@ class PrismApp.Main
 		@updatePlayer(player) for player in @otherPlayers.children
 		@updatePlayer(@player)
 
+	initCollision: ->
+		@isColliding = true
+		setTimeout (=> @isColliding = false), 20
+
 	updatePlayer: (player) ->
 		hasCollided = false
 		player.move()
 
 		if !hasCollided && !@isColliding
-			obstacle = @oneToManyCollisionCheck(player, @obstacles.children)
+			obstacle = PrismApp.Collisions.oneToManyCollisionCheck(player, @obstacles.children)
 			if obstacle?
 				hasCollided = true
 
-				console.log("collision with obstacle!")
-				if player.position.x > obstacle.position.x + obstacle.width
+				# player to the right of obstacle
+				if player.position.x > obstacle.position.x + obstacle.width/2
 					player.rotation *= -(Math.PI / 4)
-					@isColliding = true
-					setTimeout (=> @isColliding = false), 50
-
-				else if player.position.y > obstacle.position.y + obstacle.height
+					@initCollision()
+				# player to the left of obstacle
+				else if player.position.x < obstacle.position.x - obstacle.width/2
 					player.rotation *= -(Math.PI / 4)
-					@isColliding = true
-					setTimeout (=> @isColliding = false), 50
-
-				else if player.position.x < obstacle.position.x
+					@initCollision()
+				# player below obstacle
+				else if player.position.y > obstacle.position.y + obstacle.height/2
 					player.rotation *= -(Math.PI / 4)
-					@isColliding = true
-					setTimeout (=> @isColliding = false), 50
-
-				else if player.position.y < obstacle.position.y
+					@initCollision()
+				# player above obstacle
+				if player.position.y < obstacle.position.y - obstacle.height/2
 					player.rotation *= -(Math.PI / 4)
-					@isColliding = true
-					setTimeout (=> @isColliding = false), 50
+					@initCollision()
 
-			prism = @oneToOneCollisionCheck(player, @prism)
+			prism = PrismApp.Collisions.oneToOneCollisionCheck(player, @prism)
 			if prism?
 				hasCollided = true
 				@prism.move()
@@ -132,17 +132,6 @@ class PrismApp.Main
 				console.log("collision with prism!")
 
 	allPlayers: -> [@player].concat(@otherPlayers.children)
-
-	oneToManyCollisionCheck: (one, many) ->
-			for collider in many
-				return collider if @oneToOneCollisionCheck(one, collider)
-
-	oneToOneCollisionCheck: (one, collider) ->
-		if one isnt collider && one.owner isnt collider && collider.owner isnt one
-			dx = one.position.x - collider.position.x
-			dy = one.position.y - collider.position.y
-			radi = (one.width + collider.width) / 2
-			return true if (dx * dx + dy * dy) < (radi * radi)
 
 	getNewCenter: ->
 		center = new PIXI.Point(0,0)
