@@ -1,3 +1,4 @@
-var server = require('./http/server');
+var server = require('./http/server')
+var port = process.env.PORT || 3000;
 
-server.init();
+server.listen(port);

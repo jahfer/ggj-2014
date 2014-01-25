@@ -3,7 +3,7 @@ var express = require('express')
 , socket = require('./socket')
 , path = require('path');
 
-var app = express()
+var app = express();
 
 app.configure(function() {
   app.use(express.static(path.resolve('app/assets')));
@@ -14,11 +14,11 @@ app.get('/', function(req, res) {
 });
 
 module.exports = {
-  init: function() {
-    var server = app.listen( process.env.PORT || 3000 )
-    socket.init(server)
+  listen: function(port) {
+    var server = app.listen(port);
+    socket.init(server);
 
-    console.log('Express server listening on port 3000')
+    console.log('Express server listening on port', port);
   }
 }
 

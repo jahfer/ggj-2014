@@ -1,3 +1,5 @@
+var routes = require('../routes/routes');
+
 module.exports = {
   init: function(server) {
     var io = require('socket.io').listen(server);
@@ -7,9 +9,7 @@ module.exports = {
     });
 
     io.sockets.on('connection', function (socket) {
-      socket.on('hello!', function(data) {
-        console.log("RECEIVED:", data);
-      });
+      socket.on('hello!', routes.user.helloHandler);
     });
   },
 }
