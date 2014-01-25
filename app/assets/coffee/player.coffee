@@ -9,11 +9,15 @@ class PrismApp.Player extends PrismApp.Renderable
 
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)
+
 		@up = up
 		@left = left
 		@right = right
 		@down = down
 
+		@bindKeys()
+
+	bindKeys: ->
 		kd[@up].down => @velocity += 0.1 if @velocity < globals.MAX_VEL
 
 		kd[@down].down =>
@@ -24,3 +28,11 @@ class PrismApp.Player extends PrismApp.Renderable
 
 		kd[@left].down => @rotation -= 0.1
 		kd[@right].down => @rotation += 0.1
+
+	toJSON: ->
+		id: @id
+		anchor: @anchor
+		position: @position
+		velocity: @velocity
+		rotation: @rotation
+		moveV: @moveV
