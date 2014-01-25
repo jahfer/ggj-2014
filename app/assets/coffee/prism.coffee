@@ -2,7 +2,9 @@ class PrismApp.Prism extends PrismApp.Renderable
 
 	texture: PIXI.Texture.fromImage("images/prism.png")
 
-	constructor: (anchor, position) ->
+	constructor: (anchorX, anchorY, posX, posY) ->
+		anchor = {x: anchorX, y: anchorY}
+		position = {x: posX, y: posY}
 		super(@texture, anchor, position)
 
 		@velocity = 0
@@ -10,4 +12,4 @@ class PrismApp.Prism extends PrismApp.Renderable
 		@owner
 
 
-		
+

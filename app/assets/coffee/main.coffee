@@ -17,9 +17,9 @@ $ ->
 
 	$('body').append(renderer.view)
 
-	players.push(new PrismApp.Player({x: 0.5, y: 0.5}, {x: 200, y: 150}, "W", "A", "S", "D"))
-	players.push(new PrismApp.Player({x: 0.5, y: 0.5}, {x: 400, y: 150},"UP", "LEFT", "DOWN", "RIGHT"))
-	prism = new PrismApp.Prism({x: 0.5, y: 0.5}, {x: 300, y: 250})
+	players.push(new PrismApp.Player(0.5, 0.5, 200, 150, "W", "A", "S", "D"))
+	players.push(new PrismApp.Player(0.5, 0.5, 400, 150,"UP", "LEFT", "DOWN", "RIGHT"))
+	prism = new PrismApp.Prism(0.5, 0.5, 300, 250)
 
 	meteors = 10
 	for i in [0..10]
