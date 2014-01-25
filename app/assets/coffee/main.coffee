@@ -8,6 +8,10 @@ window.globals =
 class PrismApp.Main
 	constructor: ->
 		@playerTextures = []
+		@ghostTextures = []
+		@obstacleTextures = []
+
+
 
 		assetsToLoader = ["images/prism_sprites.json"]
 		loader = new PIXI.AssetLoader(assetsToLoader)
@@ -47,7 +51,7 @@ class PrismApp.Main
 		@bindEvents()
 
 	onAssetsLoaded: =>
-		for i in [0..17]
+		for i in [0..5]
 			texture = PIXI.Texture.fromFrame ("ghost "+(i+1)+".png")
 			@playerTextures.push(texture)
 			testTexture = new PIXI.MovieClip(@playerTextures)
@@ -98,22 +102,22 @@ class PrismApp.Main
 
 				console.log("collision with obstacle!")
 				if player.position.x > obstacle.position.x + obstacle.width
-					player.rotation *= -Math.PI
+					player.rotation *= -(Math.PI / 4)
 					@isColliding = true
 					setTimeout (=> @isColliding = false), 50
 
 				else if player.position.y > obstacle.position.y + obstacle.height
-					player.rotation *= -Math.PI
+					player.rotation *= -(Math.PI / 4)
 					@isColliding = true
 					setTimeout (=> @isColliding = false), 50
 
 				else if player.position.x < obstacle.position.x
-					player.rotation *= -Math.PI
+					player.rotation *= -(Math.PI / 4)
 					@isColliding = true
 					setTimeout (=> @isColliding = false), 50
 
 				else if player.position.y < obstacle.position.y
-					player.rotation *= -Math.PI
+					player.rotation *= -(Math.PI / 4)
 					@isColliding = true
 					setTimeout (=> @isColliding = false), 50
 
