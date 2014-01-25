@@ -1,7 +1,7 @@
 class PrismApp.Player extends PrismApp.Renderable
 
 	texture: PIXI.Texture.fromImage("images/player_red.png")
-
+	
 	constructor: (anchorX, anchorY, posX, posY, active = false) ->
 		anchor = {x: anchorX, y: anchorY}
 		position = {x: posX, y: posY}

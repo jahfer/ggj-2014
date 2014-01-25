@@ -7,6 +7,17 @@ window.globals =
 
 class PrismApp.Main
 	constructor: ->
+		@playerTextures = []
+
+		assetsToLoader = ["images/prism_sprites.json"]
+		loader = new PIXI.AssetLoader(assetsToLoader)
+		loader.onComplete = @onAssetsLoaded
+		loader.load()
+
+		testingPlayers = []
+
+		count = 0
+
 		@stage = new PIXI.Stage(0x000000)
 		@world = new PIXI.DisplayObjectContainer()
 		@obstacles = new PIXI.DisplayObjectContainer()
@@ -37,6 +48,19 @@ class PrismApp.Main
 		@maxBound = new PIXI.Point(0,0)
 
 		@bindEvents()
+
+	onAssetsLoaded: =>
+		for i in [0..17]
+			texture = PIXI.Texture.fromFrame ("ghost "+(i+1)+".png")
+			@playerTextures.push(texture)
+			testTexture = new PIXI.MovieClip(@playerTextures)
+			testTexture.position.x = 50;
+			testTexture.position.y = 50;
+			testTexture.anchor.x = .5;
+			testTexture.anchor.y = .5;
+			testTexture.animationSpeed = .2
+			testTexture.gotoAndPlay(Math.random()*27)
+			@stage.addChild(testTexture)
 
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (id) =>
