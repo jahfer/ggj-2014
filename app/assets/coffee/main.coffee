@@ -14,14 +14,13 @@ class PrismApp.Main
 
 		@renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
 
-		@socket = new PrismApp.Socket()
-
 		$('body').append(@renderer.view)
 
 		@otherPlayers.addChild(new PrismApp.Player(0.5, 0.5, 200, 150))
 		@otherPlayers.addChild(new PrismApp.Player(0.5, 0.5, 400, 150))
-		@player = new PrismApp.Player(0.5, 0.5, 0, 0, true)
 		@prism = new PrismApp.Prism()
+
+		@player = new PrismApp.Player(0.5, 0.5, 0, 0, true)
 
 		for i in [0..10]
 			obstacle = new PrismApp.Obstacle({x: 0.5, y: 0.5}, {x: 600, y: 250})
@@ -40,7 +39,7 @@ class PrismApp.Main
 		@bindEvents()
 
 	bindEvents: ->
-		@socket.on 'user:register', (id) =>
+		PrismApp.Socket.on 'user:register', (id) =>
 			@player.id = id
 			console.log @player.toJSON()
 			# lets kick things off
