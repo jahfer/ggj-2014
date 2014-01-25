@@ -8,7 +8,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)
 		@owner
-		@position = 0
-		@scale.x = 0.2 + Math.random()*0.8
-		@scale.y = @scale.x
-		@velocity = MAX_VEL / 20;
+		#@position = 0
+		#@scale.x = 0.2 + Math.random()*0.8
+		#@scale.y = @scale.x
+		#@velocity = MAX_VEL / 20;
