@@ -32,11 +32,19 @@ class PrismApp.Main
 		@world.addChild(@otherPlayers)
 		@world.addChild(@prism)
 
-		#@stage.addChild(@prism)
 		@stage.addChild(@world)
 
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
+
+		@bindEvents()
+
+	bindEvents: ->
+		@socket.on 'user:register', (id) =>
+			@player.id = id
+			console.log @player.toJSON()
+			# lets kick things off
+			requestAnimFrame(@draw)
 
 	updatePlayers: ->
 		@updatePlayer(player) for player in @otherPlayers
@@ -67,7 +75,6 @@ class PrismApp.Main
 			dy = one.position.y - collider.position.y
 			radi = (one.width + collider.width) / 2
 			return true if (dx * dx + dy * dy) < (radi * radi)
-
 
 	getNewCenter: ->
 		center = new PIXI.Point(0,0)
@@ -122,4 +129,3 @@ class PrismApp.Main
 
 $ ->
 	app = new PrismApp.Main()
-	requestAnimFrame(app.draw)

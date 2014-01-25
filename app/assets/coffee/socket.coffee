@@ -4,3 +4,6 @@ class PrismApp.Socket
 
   emit: (event, data) ->
     @conn.emit('hello!', {my: 'data'})
+
+  on: (event, cb) ->
+    @conn.on(event, cb)
