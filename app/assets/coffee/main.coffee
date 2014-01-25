@@ -20,6 +20,7 @@ $ ->
 	players.push(new PrismApp.Player(0.5, 0.5, 200, 150, "W", "A", "S", "D"))
 	players.push(new PrismApp.Player(0.5, 0.5, 400, 150,"UP", "LEFT", "DOWN", "RIGHT"))
 	prism = new PrismApp.Prism(0.5, 0.5, 300, 250)
+	world.addChild(prism)
 
 	meteors = 10
 	for i in [0..10]
@@ -28,7 +29,6 @@ $ ->
 
 	world.addChild(player) for player in players
 
-	stage.addChild(prism)
 	stage.addChild(world)
 
 	minBound = new PIXI.Point(0,0)

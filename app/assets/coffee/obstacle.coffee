@@ -14,8 +14,6 @@ class PrismApp.Obstacle extends PrismApp.Renderable
 		@position.x = Math.floor(Math.random() * (globals.WIN_W - 150 + 1)) + 100;
 		@position.y = Math.floor(Math.random() * (globals.WIN_H - 150 + 1)) + 100;
 
-		console.log @position
-
 		@scale.x = Math.random() * 0.6 + 0.4
 		@scale.y = @scale.x
 		@rotation = Math.random() * 2 * Math.PI
