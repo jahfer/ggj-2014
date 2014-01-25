@@ -1,6 +1,6 @@
 class PrismApp.Obstacle extends PrismApp.Renderable
 
-	texture: PIXI.Texture.fromImage("images/prism.png")
+	texture: PIXI.Texture.fromImage("images/obstacle_stationary.png")
 
 	constructor: (anchor, position) ->
 		super(@texture, anchor, position)
