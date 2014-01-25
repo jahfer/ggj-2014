@@ -9,8 +9,10 @@ $ ->
 	$('body').append(renderer.view)
 
 	player = new PrismApp.Player({x: 0.5, y: 0.5}, {x: 200, y: 150})
+	prism = new PrismApp.Prism({x: 0.5, y: 0.5}, {x: 300, y: 250})
 
 	stage.addChild(player)
+	stage.addChild(prism)
 
 	animate = -> 
 		requestAnimFrame(animate)

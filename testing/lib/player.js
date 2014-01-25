@@ -5,7 +5,7 @@ var __hasProp = {}.hasOwnProperty,
 PrismApp.Player = (function(_super) {
   __extends(Player, _super);
 
-  Player.prototype.texture = PIXI.Texture.fromImage("images/lighthouse.png");
+  Player.prototype.texture = PIXI.Texture.fromImage("images/player_red.png");
 
   function Player(anchor, position) {
     Player.__super__.constructor.call(this, this.texture, anchor, position);
