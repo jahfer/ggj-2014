@@ -8,8 +8,8 @@ $ ->
 
 	$('body').append(renderer.view)
 
-	player = new PrismApp.Player({x: 0.5, y: 0.5}, {x: 200, y: 150})
-	prism = new PrismApp.Prism({x: 0.5, y: 0.5}, {x: 300, y: 250})
+	player = new PrismApp.Player({x: 0.5, y: 0.5}, {x: 200, y: 150}, 0)
+	prism = new PrismApp.Prism({x: 0.5, y: 0.5}, {x: 300, y: 250}, 0)
 
 	stage.addChild(player)
 	stage.addChild(prism)

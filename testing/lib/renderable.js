@@ -5,14 +5,23 @@ var __hasProp = {}.hasOwnProperty,
 PrismApp.Renderable = (function(_super) {
   __extends(Renderable, _super);
 
-  function Renderable(texture, anchor, position) {
+  function Renderable(texture, anchor, position, velocity) {
     this.texture = texture;
     Renderable.__super__.constructor.call(this, this.texture);
     this.anchor.x = anchor.x;
     this.anchor.y = anchor.y;
     this.position.x = position.x;
     this.position.y = position.y;
+    this.velocity = velocity;
+    this.moveV = new PIXI.Point(0, 0);
   }
+
+  Renderable.prototype.move = function() {
+    this.moveV.x = this.velocity * Math.cos(this.rotation - Math.PI / 2);
+    this.moveV.y = this.velocity * Math.sin(this.rotation - Math.PI / 2);
+    this.position.x += moveV.x;
+    return this.position.y += moveV.y;
+  };
 
   return Renderable;
 

@@ -9,6 +9,9 @@ PrismApp.Obstacles = (function(_super) {
 
   function Obstacles(anchor, position) {
     Obstacles.__super__.constructor.call(this, this.texture, anchor, position);
+    this.velocity = 0;
+    this.moveV = new PIXI.Point(0, 0);
+    this.owner;
   }
 
   return Obstacles;

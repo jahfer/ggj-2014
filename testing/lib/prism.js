@@ -9,6 +9,9 @@ PrismApp.Prism = (function(_super) {
 
   function Prism(anchor, position) {
     Prism.__super__.constructor.call(this, this.texture, anchor, position);
+    this.velocity = 0;
+    this.moveV = new PIXI.Point(0, 0);
+    this.owner;
   }
 
   return Prism;

@@ -9,6 +9,13 @@ PrismApp.Player = (function(_super) {
 
   function Player(anchor, position) {
     Player.__super__.constructor.call(this, this.texture, anchor, position);
+    this.velocity = 0;
+    this.moveV = new PIXI.Point(0, 0);
+    this.owner;
+    this.position = 0;
+    this.scale.x = 0.2 + Math.random() * 0.8;
+    this.scale.y = this.scale.x;
+    this.velocity = MAX_VEL / 20;
   }
 
   return Player;
