@@ -2,14 +2,18 @@ class PrismApp.Prism extends PrismApp.Renderable
 
 	texture: PIXI.Texture.fromImage("images/prism.png")
 
-	constructor: (anchorX, anchorY, posX, posY) ->
-		anchor = {x: anchorX, y: anchorY}
-		position = {x: posX, y: posY}
+	constructor: () ->
+		anchor = {x: 0.5, y: 0.5}
+		position = {}
+		position.x = Math.floor(Math.random() * (globals.WIN_W - 150 + 1)) + 100;
+		position.y = Math.floor(Math.random() * (globals.WIN_H - 150 + 1)) + 100;
+
 		super(@texture, anchor, position)
 
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)
 		@owner
 
+		
 
 

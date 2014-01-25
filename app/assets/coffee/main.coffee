@@ -9,56 +9,69 @@ class PrismApp.Main
 	constructor: ->
 		@stage = new PIXI.Stage(0x000000)
 		@world = new PIXI.DisplayObjectContainer()
+		@obstacles = new PIXI.DisplayObjectContainer()
+		@players = new PIXI.DisplayObjectContainer()
 
 		@renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
-		@players = new Array()
 
 		socket = new PrismApp.Socket()
 		socket.emit('hello', foo: 'bar')
 
 		$('body').append(@renderer.view)
 
-		@players.push(new PrismApp.Player(0.5, 0.5, 200, 150, "W", "A", "S", "D"))
-		@players.push(new PrismApp.Player(0.5, 0.5, 400, 150,"UP", "LEFT", "DOWN", "RIGHT"))
-		prism = new PrismApp.Prism(0.5, 0.5, 300, 250)
-		@world.addChild(prism)
+		@players.addChild(new PrismApp.Player(0.5, 0.5, 200, 150, "W", "A", "S", "D"))
+		@players.addChild(new PrismApp.Player(0.5, 0.5, 400, 150,"UP", "LEFT", "DOWN", "RIGHT"))
+		@prism = new PrismApp.Prism()
 
 		for i in [0..10]
 			obstacle = new PrismApp.Obstacle({x: 0.5, y: 0.5}, {x: 600, y: 250})
-			@world.addChild(obstacle)
+			@obstacles.addChild(obstacle)
 
-		@world.addChild(player) for player in @players
+		@world.addChild(@obstacles)
+		@world.addChild(@players)
+		@world.addChild(@prism)
 
-		@stage.addChild(prism)
+		#@stage.addChild(@prism)
 		@stage.addChild(@world)
 
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
 
 	updatePlayers: ->
-		for player in @players
+		for player in @players.children
 			hasCollided = false
 			player.move()
-			if !hasCollided && @oneToManyCollisionCheck(player, @players)
-				console.log("collision!")
+
+			if !hasCollided && @oneToManyCollisionCheck(player, @obstacles.children)
+				hasCollided = true
+				console.log("collision with obstacle!")
+
+			if !hasCollided && @oneToOneCollisionCheck(player, @prism)
+				hasCollided = true
+				console.log("collision with prism!")
+
 
 	oneToManyCollisionCheck: (one, many) ->
 			for collider in many
-				if one isnt collider && one.owner isnt collider && collider.owner isnt one
-					dx = one.position.x - collider.position.x
-					dy = one.position.y - collider.position.y
-					radi = (one.width + collider.width) / 2
-					return true if (dx * dx + dy * dy) < (radi * radi)
+				return true if @oneToOneCollisionCheck(one, collider)
+
+	oneToOneCollisionCheck: (one, collider) ->
+		if one isnt collider && one.owner isnt collider && collider.owner isnt one
+			dx = one.position.x - collider.position.x
+			dy = one.position.y - collider.position.y
+			radi = (one.width + collider.width) / 2
+			return true if (dx * dx + dy * dy) < (radi * radi)
+
 
 	getNewCenter: ->
 		center = new PIXI.Point(0,0)
 
-		for player in @players
+		for player in @players.children
 			center.x += player.position.x
 			center.y += player.position.y
 
-		center.x = center.x / @players.length
-		center.y = center.y / @players.length
+		center.x = center.x / @players.children.length
+		center.y = center.y / @players.children.length
 		return center
 
 	scaleMap: (center) ->
@@ -66,7 +79,7 @@ class PrismApp.Main
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * @world.scale.y
 		scale = 1
 
-		for player in @players
+		for player in @players.children
 			absx = Math.abs(player.position.x) + 100
 			absy = Math.abs(player.position.y) + 100
 
