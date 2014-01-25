@@ -48,6 +48,8 @@ class PrismApp.Main
 
 		if !hasCollided && @oneToManyCollisionCheck(player, @obstacles.children)
 			hasCollided = true
+			player.position.x = 4
+			player.position.y = 100
 			console.log("collision with obstacle!")
 
 		if !hasCollided && @oneToOneCollisionCheck(player, @prism)
