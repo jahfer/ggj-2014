@@ -1,6 +1,6 @@
 $ ->
 	stage = new PIXI.Stage(0x000000)
-	world = new PIXI.DisplayObjectContainer();
+	world = new PIXI.DisplayObjectContainer()
 
 	window.globals =
 		WIN_W: 1000
@@ -20,7 +20,7 @@ $ ->
 	players.push(new PrismApp.Player({x: 0.5, y: 0.5}, {x: 400, y: 150},"UP", "LEFT", "DOWN", "RIGHT"))
 	prism = new PrismApp.Prism({x: 0.5, y: 0.5}, {x: 300, y: 250})
 
-	meteors = 10;
+	meteors = 10
 	for i in [0..10]
 		obstacle = new PrismApp.Obstacle({x: 0.5, y: 0.5}, {x: 600, y: 250})
 		world.addChild(obstacle)
@@ -30,11 +30,27 @@ $ ->
 	stage.addChild(prism)
 	stage.addChild(world)
 
-	move = new PIXI.Point(0,0);
-	center = new PIXI.Point(0,0);
-	minBound = new PIXI.Point(0,0);
-	maxBound = new PIXI.Point(0,0);
+	move = new PIXI.Point(0,0)
+	center = new PIXI.Point(0,0)
+	minBound = new PIXI.Point(0,0)
+	maxBound = new PIXI.Point(0,0)
 
+	checkCollision = ->
+		hasCollided = false
+		for player in players
+			player.move()
+			if !hasCollided && oneToManyCollisionCheck(player, players)
+				hasCollided = true
+
+		return hasCollided
+
+	oneToManyCollisionCheck = (one, many) ->
+			for collider in many
+				if one isnt collider && one.owner isnt collider && collider.owner isnt one
+					dx = one.position.x - collider.position.x
+					dy = one.position.y - collider.position.y
+					radi = (one.width + collider.width) / 2
+					return true if (dx * dx + dy * dy) < (radi * radi)
 
 	animate = ->
 		PrismApp.stats.begin()
@@ -43,7 +59,6 @@ $ ->
 		move.y = 0
 		center.x = 0
 		center.y = 0
-		#player.rotation += 0.1
 		prism.rotation -= 0.1
 		kd.tick()
 		for player in players
@@ -57,7 +72,7 @@ $ ->
 
 		cx = (globals.WIN_W/2) + Math.abs(center.x) * world.scale.x
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * world.scale.y
-		scale = 1;
+		scale = 1
 
 		for player in players
 			absx = Math.abs(player.position.x) + 100
@@ -72,13 +87,13 @@ $ ->
 		world.scale.y = scale
 		world.position.x = globals.WIN_W/2 - center.x * scale
 		world.position.y = globals.WIN_H/2 - center.y * scale
-		maxBound.x = center.x + globals.WIN_W/2/scale
-		maxBound.y = center.y + globals.WIN_H/2/scale
-		minBound.x = center.x - globals.WIN_W/2/scale
-		minBound.y = center.y - globals.WIN_H/2/scale
+		maxBound.x = center.x + (globals.WIN_W / 2) / scale
+		maxBound.y = center.y + (globals.WIN_H / 2) / scale
+		minBound.x = center.x - (globals.WIN_W / 2) / scale
+		minBound.y = center.y - (globals.WIN_H / 2) / scale
 
-
-		child.move() for child in world.children
+		if checkCollision()
+			console.log "Collision detected!"
 
 		requestAnimFrame(animate)
 
