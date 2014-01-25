@@ -1,4 +1,4 @@
-var routes = require('../routes/routes');
+var routes = require('../routes/router');
 
 module.exports = {
   init: function(server) {

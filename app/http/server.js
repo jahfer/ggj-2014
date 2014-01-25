@@ -1,7 +1,7 @@
 var express = require('express')
 , http = require('http')
 , socket = require('./socket')
-, path = require('path');
+, path = require('path')
 
 var app = express();
 
@@ -21,4 +21,3 @@ module.exports = {
     console.log('Express server listening on port', port);
   }
 }
-
