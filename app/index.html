@@ -8,7 +8,29 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
+  <script >
+  // Load them google fonts before starting...!
+  WebFontConfig = {
+    google: {
+      families: [ 'Snippet', 'Arvo:700italic', 'Podkova:700' ]
+    },
 
+    active: function() {
+      // do something
+      init();
+    }
+
+  };
+  (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+  </script>
   <script>window.PrismApp = window.PrismApp || {}</script>
 
   <script src="js/vendor/stats.min.js"></script>

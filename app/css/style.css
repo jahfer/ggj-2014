@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Arvo';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Arvo Bold Italic'), local('Arvo-BoldItalic'), url(http://themes.googleusercontent.com/static/fonts/arvo/v6/Vj6JEk1YZr8j8R8H2j0b-rO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Podkova';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Podkova Bold'), local('Podkova-Bold'), url(http://themes.googleusercontent.com/static/fonts/podkova/v6/2jQxAnybA2Euoel-lC6TCb3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
+}
+@font-face {
+  font-family: 'Snippet';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Snippet'), url(http://themes.googleusercontent.com/static/fonts/snippet/v4/fAP-E0beNC7crLbNRC9S7QLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+}
