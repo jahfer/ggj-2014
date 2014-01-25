@@ -1,6 +1,5 @@
 var routes = require('../routes/router');
-
-var next_id = 1;
+var userController = require('../controllers/user');
 
 module.exports = {
   init: function(server) {
@@ -11,10 +10,10 @@ module.exports = {
     });
 
     io.sockets.on('connection', function (socket) {
+      console.log("====================================")
       console.log("Connection received")
-      socket.emit('user:register', next_id++)
 
-      socket.on('hello!', routes.user.helloHandler);
+      userController.register(socket)
     });
   },
 }

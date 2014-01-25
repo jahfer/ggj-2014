@@ -12,6 +12,8 @@ class PrismApp.Renderable extends PIXI.Sprite
 		@velocity = velocity
 		@moveV = new PIXI.Point(0,0)
 
+		@bindEvents?()
+
 	move: ->
 		@moveV.x = @velocity * Math.cos(@rotation - Math.PI / 2);
 		@moveV.y = @velocity * Math.sin(@rotation - Math.PI / 2);

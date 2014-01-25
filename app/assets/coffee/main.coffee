@@ -26,9 +26,6 @@ class PrismApp.Main
 		@renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
 
 		$('body').append(@renderer.view)
-
-		@otherPlayers.addChild(new PrismApp.Player(0.5, 0.5, 200, 150))
-		@otherPlayers.addChild(new PrismApp.Player(0.5, 0.5, 400, 150))
 		@prism = new PrismApp.Prism()
 
 		@player = new PrismApp.Player(0.5, 0.5, 0, 0, true)
@@ -63,11 +60,28 @@ class PrismApp.Main
 			@stage.addChild(testTexture)
 
 	bindEvents: ->
-		PrismApp.Socket.on 'user:register', (id) =>
-			@player.id = id
-			console.log @player.toJSON()
-			# lets kick things off
+		PrismApp.Socket.on 'user:register', (data) =>
+			@player.id = data.id
+
+			for id, player of data.players
+				console.log "Initialized existing user #{id}"
+				newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y)
+				newPlayer.id = id
+				@otherPlayers.addChild(newPlayer)
+
+			PrismApp.Socket.emit 'user:registered', @player.toJSON()
 			requestAnimFrame(@draw)
+
+		PrismApp.Socket.on 'user:new', (player) =>
+			console.log "User #{player.id} connected"
+			newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y)
+			newPlayer.id = player.id
+			@otherPlayers.addChild(newPlayer)
+
+		PrismApp.Socket.on 'user:disconnect', (id) =>
+			console.log "User #{id} disconnected"
+			disconnectedPlayer = @otherPlayers.children.filter (player) -> id == player.id
+			@otherPlayers.removeChild(disconnectedPlayer[0])
 
 	updatePlayers: ->
 		@updatePlayer(player) for player in @otherPlayers
@@ -175,4 +189,4 @@ class PrismApp.Main
 
 $ ->
 	window.app = new PrismApp.Main()
-	
+
