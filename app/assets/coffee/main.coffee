@@ -11,8 +11,9 @@ $ ->
 
 	renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
 	players = new Array()
-	socket = io.connect("http://localhost:3000")
-	socket.emit('hello!', {my: 'data'})
+
+	socket = new PrismApp.Socket()
+	socket.emit('hello', foo: 'bar')
 
 	$('body').append(renderer.view)
 
