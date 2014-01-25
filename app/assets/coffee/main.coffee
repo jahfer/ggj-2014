@@ -84,7 +84,7 @@ class PrismApp.Main
 			@otherPlayers.removeChild(disconnectedPlayer[0])
 
 	updatePlayers: ->
-		@updatePlayer(player) for player in @otherPlayers
+		@updatePlayer(player) for player in @otherPlayers.children
 		@updatePlayer(@player)
 
 	updatePlayer: (player) ->
@@ -95,7 +95,6 @@ class PrismApp.Main
 			obstacle = @oneToManyCollisionCheck(player, @obstacles.children)
 			if obstacle?
 				hasCollided = true
-
 
 				console.log("collision with obstacle!")
 				if player.position.x > obstacle.position.x + obstacle.width
@@ -125,6 +124,8 @@ class PrismApp.Main
 				@player.setTexture(@playerTextures[2])
 				console.log("collision with prism!")
 
+	allPlayers: -> [@player].concat(@otherPlayers.children)
+
 	oneToManyCollisionCheck: (one, many) ->
 			for collider in many
 				return collider if @oneToOneCollisionCheck(one, collider)
@@ -139,15 +140,13 @@ class PrismApp.Main
 	getNewCenter: ->
 		center = new PIXI.Point(0,0)
 
-		for player in @otherPlayers.children
+		allPlayers = @allPlayers()
+		for player in allPlayers
 			center.x += player.position.x
 			center.y += player.position.y
 
-		center.x += @player.position.x
-		center.y += @player.position.y
-
-		center.x = center.x / (@otherPlayers.children.length + 1)
-		center.y = center.y / (@otherPlayers.children.length + 1)
+		center.x = center.x / allPlayers.length
+		center.y = center.y / allPlayers.length
 		return center
 
 	scaleMap: (center) ->
@@ -155,7 +154,9 @@ class PrismApp.Main
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * @world.scale.y
 		scale = 1
 
-		for player in @otherPlayers.children
+		allPlayers = @allPlayers()
+
+		for player in allPlayers
 			absx = Math.abs(player.position.x) + 100
 			absy = Math.abs(player.position.y) + 100
 

@@ -12,13 +12,13 @@ class PrismApp.Player extends PrismApp.Renderable
 		@bindKeys('W', 'S', 'A', 'D') if active
 
 	bindEvents: ->
-		PrismApp.Socket.on 'user:move:up', (data) ->
+		PrismApp.Socket.on 'user:move:up', (data) =>
 			@moveUp() if data.id == @id
-		PrismApp.Socket.on 'user:move:down', (data) ->
+		PrismApp.Socket.on 'user:move:down', (data) =>
 			@moveDown() if data.id == @id
-		PrismApp.Socket.on 'user:move:left', (data) ->
+		PrismApp.Socket.on 'user:move:left', (data) =>
 			@moveLeft() if data.id == @id
-		PrismApp.Socket.on 'user:move:right', (data) ->
+		PrismApp.Socket.on 'user:move:right', (data) =>
 			@moveRight() if data.id == @id
 
 	bindKeys: (up, down, left, right) ->
@@ -38,7 +38,8 @@ class PrismApp.Player extends PrismApp.Renderable
 			@moveRight()
 			PrismApp.Socket.emit 'user:move:right', @toJSON()
 
-	moveUp: -> @velocity += 0.1 if @velocity < globals.MAX_VEL
+	moveUp: ->
+		@velocity += 0.1 if @velocity < globals.MAX_VEL
 
 	moveDown: ->
 		if @velocity > 0
@@ -46,8 +47,11 @@ class PrismApp.Player extends PrismApp.Renderable
     else if @velocity > -globals.MAX_VEL
       @velocity -= 0.05
 
-	moveLeft: -> @rotation -= 0.1
-	moveRight: -> @rotation += 0.1
+	moveLeft: ->
+		@rotation -= 0.1
+
+	moveRight: ->
+		@rotation += 0.1
 
 	toJSON: ->
 		id: @id

@@ -13,8 +13,12 @@ module.exports = {
       socket.broadcast.emit('user:new', data);
     });
 
-    socket.on('user:move:up', function(data) {
-      socket.broadcast.emit('user:move:up', data);
+    eventsToRelay = ['user:move:up', 'user:move:down', 'user:move:left', 'user:move:right'];
+
+    eventsToRelay.forEach(function(evt) {
+      socket.on(evt, function(data) {
+        socket.broadcast.emit(evt, data);
+      })
     });
 
     socket.on('disconnect', function() {
