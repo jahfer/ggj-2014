@@ -48,6 +48,7 @@ class PrismApp.Main
 
 			if !hasCollided && @oneToOneCollisionCheck(player, @prism)
 				hasCollided = true
+				@prism.move()
 				console.log("collision with prism!")
 
 
