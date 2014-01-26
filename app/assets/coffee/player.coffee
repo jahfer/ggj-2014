@@ -62,3 +62,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		rotation: @rotation
 		moveV: @moveV
 		color: @color
+
+	toGhost: ->
+		@setTexture(PrismApp.Assets.ghostTextureFromColor(@color))
+ 

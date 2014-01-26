@@ -18,6 +18,10 @@ class PrismApp.Assets
     index = @SIZES.indexOf(size)
     @obstacleTextures[index]
 
+  @ghostTextureFromColor: (color) ->
+    index = @COLORS.indexOf(color)
+    @ghostTextures[index]
+
   @onAssetsLoaded: =>
     for i in [0..2]
       texture = PIXI.Texture.fromFrame ("obstacle_"+(i+1)+".png")

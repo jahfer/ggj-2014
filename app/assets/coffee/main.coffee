@@ -72,11 +72,10 @@ class PrismApp.Main
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
 			@player.id = data.id
-			@player.setTexture(PrismApp.Assets.playerTextureFromColor(data.color))
 
 			for id, player of data.players
 				console.log "Initialized existing user #{id}"
-				newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, player.color)
+				newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
 				newPlayer.id = id
 				@otherPlayers.addChild(newPlayer)
 
@@ -85,7 +84,7 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:new', (player) =>
 			console.log "User #{player.id} connected"
-			newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, player.color)
+			newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
 			newPlayer.id = player.id
 			@otherPlayers.addChild(newPlayer)
 
@@ -132,10 +131,11 @@ class PrismApp.Main
 			if prism?
 				hasCollided = true
 				@prism.move()
-				@player.setTexture(@playerTextures[2])
 				@player.points += 10
 				@textSample.setText("Points "+@player.points)
-				#@player.isGhost = true;
+				@player.isGhost = true;
+				@player.toGhost()
+				@otherPlayers.children.forEach (player) -> player.isGhost = false
 				console.log("collision with prism!")
 
 			playerHit = PrismApp.Collisions.oneToManyCollisionCheck(player, @otherPlayers.children)
