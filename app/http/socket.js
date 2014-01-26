@@ -1,5 +1,5 @@
 var routes = require('../routes/router');
-var userController = require('../controllers/user');
+var playerController = require('../controllers/player');
 
 module.exports = {
   init: function(server) {
@@ -13,7 +13,7 @@ module.exports = {
       console.log("====================================")
       console.log("Connection received")
 
-      userController.register(socket)
+      playerController.register(socket)
     });
   },
 }
