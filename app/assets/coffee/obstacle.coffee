@@ -1,12 +1,10 @@
 class PrismApp.Obstacle extends PrismApp.Renderable
 
-	texture: PIXI.Texture.fromImage("images/obstacle_stationary.png")
-
-	constructor: (anchorX,anchorY, posX, posY, rotation) ->
+	constructor: (anchorX,anchorY, posX, posY, rotation, size) ->
 		position = {x: posX, y: posY}	
 		anchor = {x: anchorX, y: anchorY}
 		#texture = texture
-		super(@texture, anchor, position)
+		super(PrismApp.Assets.obstaclesTextureFromSize(size), anchor, position)
 		
 		@moveV = new PIXI.Point(0,0)
 		@rotation = rotation

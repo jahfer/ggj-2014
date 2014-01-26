@@ -41,7 +41,7 @@ class PrismApp.SpawnPoints
     @largeObject = [
         {x:1142, y:574, rot:Math.PI/4}
         {x:1142, y:1980, rot:-Math.PI/4}
-        {x:2863, y:1980, rot:-Math.PI/4}
+        {x:2863, y:1980, rot:Math.PI/4}
         {x:2863, y:574, rot:-Math.PI/4}
     ]
 

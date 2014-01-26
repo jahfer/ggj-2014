@@ -8,9 +8,15 @@ class PrismApp.Assets
 
   @COLORS = ['blue', 'orange', 'pink', 'purple', 'red', 'yellow']
 
+  @SIZES = ['small','medium','large']
+
   @playerTextureFromColor: (color) ->
     index = @COLORS.indexOf(color)
     @playerTextures[index]
+
+  @obstaclesTextureFromSize: (size) ->
+    index = @SIZES.indexOf(size)
+    @obstacleTextures[index]
 
   @onAssetsLoaded: =>
     for i in [0..2]

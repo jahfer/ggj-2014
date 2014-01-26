@@ -43,17 +43,17 @@ class PrismApp.Main
 
 		for i in [0..3]
 			obj = PrismApp.SpawnPoints.smallObject[i]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot)
+			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'small')
 			@obstacles.addChild(obstacle)
 
 		for i in [0..4]
 			obj = PrismApp.SpawnPoints.mediumObject[i]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot)
+			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'medium')
 			@obstacles.addChild(obstacle)
 
 		for i in [0..3]
 			obj = PrismApp.SpawnPoints.largeObject[i]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot)
+			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
 
 		@world.addChild(@obstacles)
