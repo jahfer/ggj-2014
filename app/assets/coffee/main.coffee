@@ -25,8 +25,9 @@ class PrismApp.Main
 		largeObjectRespondPoints = [{x:1142, y:574, rot:Math.PI/4},{x:1142, y:1980, rot:-Math.PI/4},{x:2863, y:1980, rot:-Math.PI/4},{x:2863, y:574, rot:-Math.PI/4}]
 		powerupRespondPoints = [{x:817, y:1556, rot:0},{x:817, y:980,rot:0},{x:1014, y:230, rot:0},{x:1749, y:955, rot:0},{x:1749, y:1502, rot:0},{x:2257, y:955, rot:0},{x:2257, y:1502,rot:0},{x:2991, y:231, rot:0},{x:3188, y:981, rot:0},{x:3188, y:1556, rot:0}]
 		@prismRespondPoints = [{x: 570, y:381, rot:0},{x: 570, y: 2118, rot:0},{x:951, y:1250, rot:0},{x: 1523, y: 767, rot:0},{x: 1523, y:1732, rot:0},{x: 2000, y:1250, rot:0},{x: 2482, y: 768, rot:0},{x: 2482, y:1733, rot:0},{x: 3435, y: 382, rot:0},{x: 3435, y:2119, rot:0}]
-		
+
 		assetsToLoader = (["images/prism_sprites.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death.json"])
+
 		#assetsToLoader = (["images/prism_sprites.json"])
 		loader = new PIXI.AssetLoader(assetsToLoader)
 		loader.onComplete = @onAssetsLoaded
@@ -141,7 +142,7 @@ class PrismApp.Main
 			# @deathTextures4.push(texture10)
 			# @deathTextures5.push(texture11)
 			@deathTextures6.push(texture12)
-		
+
 		@spawn1 = new PIXI.MovieClip(@spawnTextures1)
 		@spawn1.position.x = 250
 		@spawn1.position.y = 250
@@ -261,7 +262,7 @@ class PrismApp.Main
 
 			for id, player of data.players
 				console.log "Initialized existing user #{id}"
-				newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y)
+				newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y, player.rotation)
 				newPlayer.id = id
 				@otherPlayers.addChild(newPlayer)
 
@@ -270,7 +271,7 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:new', (player) =>
 			console.log "User #{player.id} connected"
-			newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y)
+			newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y, player.rotation)
 			newPlayer.id = player.id
 			@otherPlayers.addChild(newPlayer)
 
@@ -322,7 +323,7 @@ class PrismApp.Main
 				@textSample.setText("Points "+@player.points)
 				#@player.isGhost = true;
 				console.log("collision with prism!")
-			
+
 			# playerHit = PrismApp.Collisions.oneToManyCollisionCheck(player, @otherPlayers.children)
 			# if playerHit? && @player.isGhost = true
 			# 	console.log("you hit a ghost")
