@@ -20,6 +20,7 @@ module.exports = {
 
     eventsToRelay.forEach(function(evt) {
       socket.on(evt, function(data) {
+        allPlayers[data.id] = data;
         socket.broadcast.emit(evt, data);
       })
     });
