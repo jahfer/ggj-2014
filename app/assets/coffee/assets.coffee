@@ -2,24 +2,28 @@ class PrismApp.Assets
   @playerTextures = []
   @ghostTextures = []
   @obstacleTextures = []
+  @powerupTextures = []
+
   @spawnClips = []
   @playerGhostClips = []
   @ghostPlayerClips = []
   @fadePlayerClips = []
   @deathClips = []
+  @powerupClips = []
 
   @spawns = new PIXI.DisplayObjectContainer()
   @playerGhosts = new PIXI.DisplayObjectContainer()
   @ghostPlayers = new PIXI.DisplayObjectContainer()
   @fadePlayers = new PIXI.DisplayObjectContainer()
   @deaths = new PIXI.DisplayObjectContainer()
-
-
-  @deathTextures6 = []
+  @powerups = new PIXI.DisplayObjectContainer()
+  
 
   @COLORS = ['blue', 'orange', 'pink', 'purple', 'red', 'yellow']
 
   @SIZES = ['small','medium','large']
+
+  @TYPES = ['fast','invisible','shield','slow']
 
   @playerTextureFromColor: (color) ->
     index = @COLORS.indexOf(color)
@@ -40,11 +44,19 @@ class PrismApp.Assets
   @ghostFromPlayer: (color) ->
     index = @COLORS.indexOf(color)
     @playerGhostClips[index]
+  
+  @powerupTextureFromType: (type) ->
+    index = @TYPES.indexOf(type)
+    @powerupTextures[index]
 
   @onAssetsLoaded: =>
     for i in [0..2]
       texture = PIXI.Texture.fromFrame ("obstacle_"+(i+1)+".png")
       @obstacleTextures.push(texture)
+    
+    for i in [0..3]
+      texture = PIXI.Texture.fromFrame ("powerup_"+(i+1)+".png")
+      @powerupTextures.push(texture)
 
     for i in [0..5]
       texture = PIXI.Texture.fromFrame ("ghost_"+(i+1)+".png")
@@ -57,6 +69,7 @@ class PrismApp.Assets
     ghostPlayer = []
     fadePlayer = []
     death = []
+    powerup = []
 
     for i in [1..6]
       textures[i-1] = for j in [0..26]
@@ -74,6 +87,11 @@ class PrismApp.Assets
       fadePlayer[i-1] = for j in [0..26]
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("fade-player-#{i}_#{num}.png")
+    
+    for i in [1..4]
+      powerup[i-1] = for j in [0..26]
+        num = ("00" + j).slice(-3) 
+        PIXI.Texture.fromFrame("powerup-#{i}_#{num}.png")
 
       # death[i-1] = for j in [0..26]
       #   num = ("00" + j).slice(-3) 
@@ -123,6 +141,16 @@ class PrismApp.Assets
       @fadePlayerClips.push(mc)
       @fadePlayers.addChild(mc)
     
+    for powerupList in powerup
+      mc = new PIXI.MovieClip(powerupList)
+      mc.position.x = 250
+      mc.position.y = 250
+      mc.anchor.x = .5
+      mc.anchor.y = .5
+      mc.animationSpeed = .5
+      mc.loop = false
+      @powerupClips.push(mc)
+      @powerups.addChild(mc)
     # for deathList in death
     #   mc = new PIXI.MovieClip(deathList)
     #   mc.position.x = 250

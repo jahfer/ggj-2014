@@ -25,6 +25,7 @@ class PrismApp.Main
 		@world = new PIXI.DisplayObjectContainer()
 		@obstacles = new PIXI.DisplayObjectContainer()
 		@otherPlayers = new PIXI.DisplayObjectContainer()
+		@powerups = new PIXI.DisplayObjectContainer()
 
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
 		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'red', true)
@@ -53,11 +54,28 @@ class PrismApp.Main
 			obj = PrismApp.SpawnPoints.largeObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
+		
+		for i in [0..3]
+			obj = PrismApp.SpawnPoints.randomFor('powerup')
+			#PrismApp.SpawnPoints.powerup[]
+			powerup = new PrismApp.Powerup(obj.x, obj.y,'fast')
+			@powerups.addChild(powerup)
+		
+		for i in [3..6]
+			obj = PrismApp.SpawnPoints.randomFor('powerup')
+			powerup = new PrismApp.Powerup(obj.x, obj.y,'slow')
+			@powerups.addChild(powerup)
+		
+		for i in [6..9]
+			obj = PrismApp.SpawnPoints.randomFor('powerup')
+			powerup = new PrismApp.Powerup(obj.x, obj.y,'invisible')
+			@powerups.addChild(powerup)	
 
 		@world.addChild(@obstacles)
 		@world.addChild(@player)
 		@world.addChild(@otherPlayers)
 		@world.addChild(@prism)
+		@world.addChild(@powerups)
 
 		@stage.addChild(@world)
 		@stage.addChild(@textSample)
@@ -117,6 +135,23 @@ class PrismApp.Main
 		player.move()
 
 		if !hasCollided && !@isColliding
+
+			powerup = PrismApp.Collisions.oneToManyCollisionCheck(player, @powerups.children)
+			if powerup?
+				hasCollided = true
+
+				if powerup.type == "shield"
+					@player.shield = true
+				else if powerup.type == "invisible"
+					@player.visible = false
+				else if powerup.type == "slow"
+					@player.velocity = 0
+				else if powerup.type == "fast"
+					@player.velocity = globals.MAX_VEL
+				
+				@powerups.removeChild(powerup)
+				#powerup.visible = false
+
 			obstacle = PrismApp.Collisions.oneToManyCollisionCheck(player, @obstacles.children)
 			if obstacle?
 				hasCollided = true
@@ -134,7 +169,7 @@ class PrismApp.Main
 					player.rotation *= -(Math.PI / 4)
 					@initCollision()
 				# player above obstacle
-				if player.position.y < obstacle.position.y - obstacle.height/2
+				else if player.position.y < obstacle.position.y - obstacle.height/2
 					player.rotation *= -(Math.PI / 4)
 					@initCollision()
 
@@ -159,7 +194,7 @@ class PrismApp.Main
 				console.log("collision with prism!")
 
 			playerHit = PrismApp.Collisions.oneToManyCollisionCheck(player, @otherPlayers.children)
-			if playerHit? && @player.isGhost == true
+			if playerHit? && @player.isGhost == true && playerHit.shield == false
 				console.log("you hit a ghost")
 			else if playerHit?
 				console.log("you hit")
