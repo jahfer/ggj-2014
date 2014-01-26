@@ -7,7 +7,6 @@ window.globals =
 
 class PrismApp.Main
 	constructor: ->
-
 		assetsToLoader = (["images/prism_sprites.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death.json"])
 
 		#assetsToLoader = (["images/prism_sprites.json"])
