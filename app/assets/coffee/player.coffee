@@ -28,20 +28,20 @@ class PrismApp.Player extends PrismApp.Renderable
 
 	bindKeys: (up, down, left, right) ->
 		kd[up].down =>
-			PrismApp.Socket.emit 'user:move:up', @toJSON()
 			@moveUp()
+			PrismApp.Socket.emit 'user:move:up', @toJSON()
 
 		kd[down].down =>
-			PrismApp.Socket.emit 'user:move:down', @toJSON()
 			@moveDown()
+			PrismApp.Socket.emit 'user:move:down', @toJSON()
 
 		kd[left].down =>
-			PrismApp.Socket.emit 'user:move:left', @toJSON()
 			@moveLeft()
+			PrismApp.Socket.emit 'user:move:left', @toJSON()
 
 		kd[right].down =>
-			PrismApp.Socket.emit 'user:move:right', @toJSON()
 			@moveRight()
+			PrismApp.Socket.emit 'user:move:right', @toJSON()
 
 	moveUp: ->
 		@velocity += 0.1 if @velocity < globals.MAX_VEL
