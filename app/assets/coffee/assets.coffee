@@ -6,16 +6,11 @@ class PrismApp.Assets
 
   @deathTextures6 = []
 
-  @COLORS =
-    blue: 0
-    orange: 1
-    pink: 2
-    purple: 3
-    red: 4
-    yellow: 5
+  @COLORS = ['blue', 'orange', 'pink', 'purple', 'red', 'yellow']
 
   @playerTextureFromColor: (color) ->
-    @playerTextures[@COLORS[color]]
+    index = @COLORS.indexOf(color)
+    @playerTextures[index]
 
   @onAssetsLoaded: =>
     for i in [0..2]
