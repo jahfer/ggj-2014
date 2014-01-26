@@ -115,6 +115,7 @@ class PrismApp.Assets
       mc.anchor.x = .5
       mc.anchor.y = .5
       mc.animationSpeed = .5
+      mc.visible = false
       mc.loop = false
       @playerGhostClips.push(mc)
       @playerGhosts.addChild(mc)
@@ -126,6 +127,7 @@ class PrismApp.Assets
       mc.anchor.x = .5
       mc.anchor.y = .5
       mc.animationSpeed = .5
+      mc.visible = false
       mc.loop = false
       @ghostPlayerClips.push(mc)
       @ghostPlayers.addChild(mc)
@@ -137,6 +139,7 @@ class PrismApp.Assets
       mc.anchor.x = .5
       mc.anchor.y = .5
       mc.animationSpeed = .5
+      mc.visible = false
       mc.loop = false
       @fadePlayerClips.push(mc)
       @fadePlayers.addChild(mc)
@@ -148,6 +151,7 @@ class PrismApp.Assets
       mc.anchor.x = .5
       mc.anchor.y = .5
       mc.animationSpeed = .5
+      mc.visible = false
       mc.loop = false
       @powerupClips.push(mc)
       @powerups.addChild(mc)

@@ -43,6 +43,10 @@ class PrismApp.SpawnPoints
         {x:1142, y:1980, rot:-Math.PI/4}
         {x:2863, y:1980, rot:Math.PI/4}
         {x:2863, y:574, rot:-Math.PI/4}
+        {x: 2000, y:767, rot:0}
+        {x: 2000, y:1732, rot:0}
+        {x:1523, y:1245, rot: Math.PI/2}
+        {x:2482, y:1245, rot: Math.PI/2}
     ]
 
     @powerupList = [

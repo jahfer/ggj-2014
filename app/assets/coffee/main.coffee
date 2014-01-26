@@ -7,7 +7,7 @@ window.globals =
 
 class PrismApp.Main
 	constructor: ->
-		assetsToLoader = (["images/anim/prism_sprites.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death.json","images/anim/fade-player.json","images/anim/ghost-player.json","images/anim/player-ghost.json"])
+		assetsToLoader = (["images/anim/prism_sprites.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death-1.json","images/anim/death-2.json","images/anim/death-3.json","images/anim/death-4.json","images/anim/death-5.json","images/anim/death-6.json","images/anim/fade-player.json","images/anim/ghost-player.json","images/anim/player-ghost.json"])
 		loader = new PIXI.AssetLoader(assetsToLoader)
 		loader.onComplete = =>
 			PrismApp.Assets.onAssetsLoaded()
@@ -50,7 +50,7 @@ class PrismApp.Main
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'medium')
 			@obstacles.addChild(obstacle)
 
-		for i in [0..3]
+		for i in [0..7]
 			obj = PrismApp.SpawnPoints.largeObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
@@ -74,16 +74,17 @@ class PrismApp.Main
 		@world.addChild(@prism)
 		@world.addChild(@powerups)
 
+		@world.addChild(PrismApp.Assets.spawns)
+		@world.addChild(PrismApp.Assets.playerGhosts)
+		# @world.addChild(PrismApp.Assets.ghostPlayers)
+		# @world.addChild(PrismApp.Assets.fadePlayers)
+		# @world.addChild(PrismApp.Assets.deaths)
+
 		@stage.addChild(@world)
 		@stage.addChild(@textSample)
 
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
-		@world.addChild(PrismApp.Assets.spawns)
-		@world.addChild(PrismApp.Assets.playerGhosts)
-		@world.addChild(PrismApp.Assets.ghostPlayers)
-		@world.addChild(PrismApp.Assets.fadePlayers)
-		@world.addChild(PrismApp.Assets.deaths)
 
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
@@ -183,6 +184,7 @@ class PrismApp.Main
 				@player.isGhost = true
 				@player.visible = false
 				ghostAnim = PrismApp.Assets.ghostFromPlayer(@player.color)
+				ghostAnim.visible = true
 				ghostAnim.position = @player.position
 				ghostAnim.rotation = @player.rotation
 				ghostAnim.onComplete = =>
