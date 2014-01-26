@@ -54,20 +54,17 @@ class PrismApp.Main
 			obj = PrismApp.SpawnPoints.largeObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
-
 		for i in [0..3]
-			obj = PrismApp.SpawnPoints.randomFor('powerup')
-			#PrismApp.SpawnPoints.powerup[]
+			obj = PrismApp.SpawnPoints.nextPowerup()
 			powerup = new PrismApp.Powerup(obj.x, obj.y,'fast')
 			@powerups.addChild(powerup)
 
 		for i in [3..6]
-			obj = PrismApp.SpawnPoints.randomFor('powerup')
+			obj = PrismApp.SpawnPoints.nextPowerup()
 			powerup = new PrismApp.Powerup(obj.x, obj.y,'slow')
 			@powerups.addChild(powerup)
-
-		for i in [6..9]
-			obj = PrismApp.SpawnPoints.randomFor('powerup')
+		for i in [6..10]
+			obj = PrismApp.SpawnPoints.nextPowerup()
 			powerup = new PrismApp.Powerup(obj.x, obj.y,'invisible')
 			@powerups.addChild(powerup)
 

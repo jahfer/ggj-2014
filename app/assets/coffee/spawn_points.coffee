@@ -45,7 +45,7 @@ class PrismApp.SpawnPoints
         {x:2863, y:574, rot:-Math.PI/4}
     ]
 
-    @powerup = [
+    @powerupList = [
         {x:817, y:1556, rot:0}
         {x:817, y:980,rot:0}
         {x:1014, y:230, rot:0}
@@ -70,3 +70,35 @@ class PrismApp.SpawnPoints
         {x: 3435, y: 382, rot:0}
         {x: 3435, y:2119, rot:0}
     ]
+
+
+    @usedPowerups = []
+    @powerupQueue = []
+
+    @reloadPowerupQueue: ->
+          @powerupQueue = @powerupList.slice(0)
+          @usedColors = []
+    
+
+    @nextPowerup: ->
+        console.log('poweruplist: ', @powerupList)
+        console.log('powerupQueue:', @powerupQueue)
+        console.log('usedPowerups:', @usedPowerups)
+
+        if @powerupQueue.length == 0
+            @reloadPowerupQueue()
+
+        nextPowerup = @randomFor('powerupQueue')
+        i = @powerupQueue.indexOf(nextPowerup)
+        if i != -1
+            @powerupQueue.splice(i, 1)
+        
+        # obj = PrismApp.SpawnPoints.powerup[i]
+        # nextPowerup = @powerupQueue.shift()
+        @usedPowerups.push(nextPowerup)
+
+        return nextPowerup
+    
+       
+
+
