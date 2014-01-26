@@ -1,7 +1,7 @@
 class PrismApp.Socket
 
   @connect: ->
-    @conn = io.connect("http://localhost:5000")
+    @conn = io.connect("http://prismapp.herokuapp.com")
 
   @emit: (event, data) ->
     @conn.emit(event, data)
