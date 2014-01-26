@@ -12,6 +12,9 @@ class PrismApp.Player extends PrismApp.Renderable
 		@color = color
 		@rotation = rotation
 
+	reloadTexture: ->
+		@setTexture PrismApp.Assets.playerTextureFromColor(@color)
+
 	bindEvents: ->
 		PrismApp.Socket.on 'user:move:up', (data) =>
 			@moveUp() if data.id == @id

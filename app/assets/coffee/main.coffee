@@ -72,6 +72,8 @@ class PrismApp.Main
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
 			@player.id = data.id
+			@player.color = data.color
+			@player.reloadTexture()
 
 			for id, player of data.players
 				console.log "Initialized existing user #{id}"
