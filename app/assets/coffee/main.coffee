@@ -38,7 +38,7 @@ class PrismApp.Main
 
 		@renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
 
-		$('body').append(@renderer.view)
+		$('#prismApp').append(@renderer.view)
 
 		for i in [0..3]
 			obj = PrismApp.SpawnPoints.smallObject[i]
