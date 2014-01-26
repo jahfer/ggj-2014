@@ -225,12 +225,12 @@ class PrismApp.Main
 
 		scale = 1
 		for player in allPlayers
-			absx = Math.abs(player.position.x) + 100
-			absy = Math.abs(player.position.y) + 100
+			absx = Math.abs(player.position.x) + player.width
+			absy = Math.abs(player.position.y) + player.height
 
 			if absy > cy
 				scale = Math.min(scale, cy/absy)
-			else if absx > cx
+			if absx > cx
 				scale = Math.min(scale, cx/absx)
 
 		@world.scale.x = scale
@@ -238,10 +238,10 @@ class PrismApp.Main
 		@world.position.x = (globals.WIN_W / 2) - center.x * scale
 		@world.position.y = (globals.WIN_H / 2) - center.y * scale
 
-		@maxBound.x = center.x + (globals.WIN_W / 2) / scale
-		@maxBound.y = center.y + (globals.WIN_H / 2) / scale
-		@minBound.x = center.x - (globals.WIN_W / 2) / scale
-		@minBound.y = center.y - (globals.WIN_H / 2) / scale
+		# @maxBound.x = center.x + (globals.WIN_W / 2) / scale
+		# @maxBound.y = center.y + (globals.WIN_H / 2) / scale
+		# @minBound.x = center.x - (globals.WIN_W / 2) / scale
+		# @minBound.y = center.y - (globals.WIN_H / 2) / scale
 
 	draw: =>
 		PrismApp.stats.begin()
