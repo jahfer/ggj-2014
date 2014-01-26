@@ -81,7 +81,6 @@ class PrismApp.Player extends PrismApp.Renderable
 	toGhost: ->
 		@isGhost = true
 		@visible = false
-		debugger
 		@setTexture(PrismApp.Assets.ghostTextureFromColor(@color))
 		@anchor.y = 0.8
 		@timer()
@@ -99,6 +98,20 @@ class PrismApp.Player extends PrismApp.Renderable
 		@isGhost = false
 		@reloadTexture()
 		@anchor.y = 0.5
+
+	toHitState: ->
+		@visible = false
+		deathAnim = PrismApp.Assets.death(@color)
+		deathAnim.visible = true
+		deathAnim.position = @position
+		deathAnim.rotation = @rotation
+		deathAnim.onComplete = =>
+			playerPosition = PrismApp.SpawnPoints.randomFor('player')
+			@position.x = playerPosition.x
+			@position.y = playerPosition.y
+			@visible = true
+			deathAnim.visible = false
+		deathAnim.gotoAndPlay(0)
 
 	timer: ->
 		console.log("timer called")

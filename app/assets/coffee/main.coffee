@@ -138,6 +138,10 @@ class PrismApp.Main
 			@prism.position.x = position.x
 			@prism.position.y = position.y
 
+		PrismApp.Socket.on 'user:hit', (data) =>
+			player = (@allPlayers().filter (player) -> data.id == player.id)[0]
+			player.toHitState()
+
 	updatePlayers: ->
 		@updatePlayer(player) for player in @otherPlayers.children
 		@updatePlayer(@player)
@@ -169,21 +173,6 @@ class PrismApp.Main
 				player.rotation *= -(Math.PI / 4)
 				@initCollision()
 
-				# # player to the right of obstacle
-				# if player.position.x > obstacle.position.x + obstacle.width/2
-				# 	player.rotation *= -(Math.PI / 4)
-				# 	@initCollision()
-				# # player to the left of obstacle
-				# else if player.position.x < obstacle.position.x - obstacle.width/2
-				# 	player.rotation *= -(Math.PI / 4)
-				# 	@initCollision()
-				# # player below obstacle
-				# else if player.position.y > obstacle.position.y + obstacle.height/2
-				# 	player.rotation *= -(Math.PI / 4)
-				# 	@initCollision()
-				# # player above obstacle
-				# else if player.position.y < obstacle.position.y - obstacle.height/2
-
 			prism = PrismApp.Collisions.oneToOneCollisionCheck(player, @prism)
 			if prism?
 				hasCollided = true
@@ -193,24 +182,16 @@ class PrismApp.Main
 
 				PrismApp.Socket.emit('user:ghost:on', @player.toJSON())
 				@player.toGhost()
-
-				@otherPlayers.children.forEach (player) -> player.isGhost = false
+				@otherPlayers.children.forEach (player) -> player.toRegular()
 				console.log("collision with prism!")
 
 			playerHit = PrismApp.Collisions.oneToManyCollisionCheck(player, @otherPlayers.children)
 			if playerHit? && @player.isGhost == true && playerHit.shield == false
 				@player.points += 10
 				@textSample.setText("Points "+@player.points)
-				playerHit.visible = false
-				deathAnim = PrismApp.Assets.death(playerHit.color)
-				deathAnim.visible = true
-				deathAnim.position = playerHit.position
-				deathAnim.rotation = playerHit.rotation
-				deathAnim.onComplete = =>
-					console.log("you killed that guy")
-					# @player.visible = true
-					deathAnim.visible = false
-				deathAnim.gotoAndPlay(0)
+
+				PrismApp.Socket.emit("user:hit", playerHit.toJSON())
+				playerHit.toHitState()
 				@otherPlayers.removeChild(playerHit)
 
 			else if playerHit? && player.isGhost == true && @player.shield == false
