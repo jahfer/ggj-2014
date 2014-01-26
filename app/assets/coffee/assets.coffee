@@ -57,6 +57,9 @@ class PrismApp.Assets
     index2 = @TYPES.indexOf(type)
     @playerPowerupTextures[index1][index2]
 
+  @death: (color) ->
+    index = @COLORS.indexOf(color)
+    @deathClips[index]
 
   @onAssetsLoaded: =>
     for i in [0..2]
@@ -180,7 +183,8 @@ class PrismApp.Assets
       mc.position.y = 250
       mc.anchor.x = .5
       mc.anchor.y = .5
-      mc.animationSpeed = .5
+      mc.animationSpeed = 1.5
+      mc.visible = false
       mc.loop = false
       @deathClips.push(mc)
       @deaths.addChild(mc)

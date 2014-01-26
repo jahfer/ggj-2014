@@ -32,7 +32,7 @@ class PrismApp.Main
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
 		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'red', true)
 		@player.visible = false
-		@textSample = new PIXI.Text("points " + @player.points, {font: "15px Arial", fill: "white", align: "left"})
+		@textSample = new PIXI.Text("Points " + @player.points, {font: "15px Arial", fill: "white", align: "left"})
 		@textSample.position.x = 120
 		@textSample.position.y = 20
 
@@ -79,9 +79,9 @@ class PrismApp.Main
 		@world.addChild(PrismApp.Assets.spawns)
 		@world.addChild(PrismApp.Assets.playerGhosts)
 		@world.addChild(PrismApp.Assets.prismClip)
-		# @world.addChild(PrismApp.Assets.ghostPlayers)
-		# @world.addChild(PrismApp.Assets.fadePlayers)
-		# @world.addChild(PrismApp.Assets.deaths)
+		@world.addChild(PrismApp.Assets.ghostPlayers)
+		@world.addChild(PrismApp.Assets.fadePlayers)
+		@world.addChild(PrismApp.Assets.deaths)
 
 		@stage.addChild(@world)
 		@stage.addChild(@textSample)
@@ -213,9 +213,24 @@ class PrismApp.Main
 
 			playerHit = PrismApp.Collisions.oneToManyCollisionCheck(player, @otherPlayers.children)
 			if playerHit? && @player.isGhost == true && playerHit.shield == false
-				console.log("you hit a ghost")
+				@player.points += 10
+				@textSample.setText("Points "+@player.points)
+				playerHit.visible = false
+				deathAnim = PrismApp.Assets.death(playerHit.color)
+				deathAnim.visible = true
+				deathAnim.position = playerHit.position
+				deathAnim.rotation = playerHit.rotation
+				deathAnim.onComplete = =>
+					console.log("you killed that guy")
+					# @player.visible = true
+					deathAnim.visible = false
+				deathAnim.gotoAndPlay(0)
+				@otherPlayers.removeChild(playerHit)
+
+			else if playerHit? && player.isGhost == true && @player.shield == false
+				console.log("you are killed")
 			else if playerHit?
-				console.log("you hit")
+				console.log("you hit each other and nothing happens")	
 
 	allPlayers: -> [@player].concat(@otherPlayers.children)
 
