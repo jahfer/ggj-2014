@@ -1,11 +1,9 @@
 class PrismApp.Player extends PrismApp.Renderable
 
-	texture: PIXI.Texture.fromImage("images/player_red.png")
-
-	constructor: (anchorX, anchorY, posX, posY, rotation, active = false) ->
-		anchor = {x: anchorX, y: anchorY}
+	constructor: (posX, posY, rotation, color, active = false) ->
+		anchor = {x: 0.5, y: 0.5}
 		position = {x: posX, y: posY}
-		super(@texture, anchor, position)
+		super(PrismApp.Assets.playerTextureFromColor(color), anchor, position)
 		@points = 0
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)

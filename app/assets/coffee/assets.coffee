@@ -6,6 +6,18 @@ class PrismApp.Assets
 
   @deathTextures6 = []
 
+  @COLORS =
+    blue: 0
+    orange: 1
+    pink: 2
+    purple: 3
+    red: 4
+    yellow: 5
+
+  @playerTextureFromColor: (color) ->
+    debugger
+    @playerTextures[@COLORS[color]]
+
   @onAssetsLoaded: =>
     for i in [0..2]
       texture = PIXI.Texture.fromFrame ("obstacle_"+(i+1)+".png")

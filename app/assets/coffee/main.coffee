@@ -13,9 +13,13 @@ class PrismApp.Main
 		loader = new PIXI.AssetLoader(assetsToLoader)
 		loader.onComplete = =>
 			PrismApp.Assets.onAssetsLoaded()
-			@stage.addChild(PrismApp.Assets.spawnClips[0])
+			@init()
 
 		loader.load()
+
+	init: ->
+		PrismApp.Socket.connect()
+		@bindEvents()
 
 		count = 0
 
@@ -25,8 +29,7 @@ class PrismApp.Main
 		@otherPlayers = new PIXI.DisplayObjectContainer()
 
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
-		@player = new PrismApp.Player(0.5, 0.5, playerPosition.x, playerPosition.y, playerPosition.rot, true)
-
+		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'blue', true)
 
 		@textSample = new PIXI.Text("points "+@player.points, {font: "15px Arial", fill: "white", align: "left"})
 		@textSample.position.x = 120
@@ -37,7 +40,6 @@ class PrismApp.Main
 		$('body').append(@renderer.view)
 		prismPosition = PrismApp.SpawnPoints.randomFor('prism')
 		@prism = new PrismApp.Prism(prismPosition.x, prismPosition.y)
-
 
 		for i in [0..3]
 			obj = PrismApp.SpawnPoints.smallObject[i]
@@ -65,7 +67,7 @@ class PrismApp.Main
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
 
-		@bindEvents()
+		@stage.addChild(PrismApp.Assets.spawnClips[0])
 
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
@@ -73,7 +75,7 @@ class PrismApp.Main
 
 			for id, player of data.players
 				console.log "Initialized existing user #{id}"
-				newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y, player.rotation)
+				newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
 				newPlayer.id = id
 				@otherPlayers.addChild(newPlayer)
 
@@ -82,7 +84,7 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:new', (player) =>
 			console.log "User #{player.id} connected"
-			newPlayer = new PrismApp.Player(0.5, 0.5, player.position.x, player.position.y, player.rotation)
+			newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
 			newPlayer.id = player.id
 			@otherPlayers.addChild(newPlayer)
 
