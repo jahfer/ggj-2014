@@ -15,7 +15,6 @@ class PrismApp.Assets
     yellow: 5
 
   @playerTextureFromColor: (color) ->
-    debugger
     @playerTextures[@COLORS[color]]
 
   @onAssetsLoaded: =>

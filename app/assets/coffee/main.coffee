@@ -29,7 +29,7 @@ class PrismApp.Main
 		@otherPlayers = new PIXI.DisplayObjectContainer()
 
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
-		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'blue', true)
+		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'red', true)
 
 		@textSample = new PIXI.Text("points "+@player.points, {font: "15px Arial", fill: "white", align: "left"})
 		@textSample.position.x = 120
