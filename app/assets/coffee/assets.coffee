@@ -4,6 +4,7 @@ class PrismApp.Assets
   @obstacleTextures = []
   @powerupTextures = []
   @prismTextures = []
+  @playerPowerupTextures = []
 
   @spawnClips = []
   @playerGhostClips = []
@@ -12,13 +13,14 @@ class PrismApp.Assets
   @deathClips = []
   @powerupClips = []
 
+
   @spawns = new PIXI.DisplayObjectContainer()
   @playerGhosts = new PIXI.DisplayObjectContainer()
   @ghostPlayers = new PIXI.DisplayObjectContainer()
   @fadePlayers = new PIXI.DisplayObjectContainer()
   @deaths = new PIXI.DisplayObjectContainer()
   @powerups = new PIXI.DisplayObjectContainer()
-  
+  @playerPowerups = new PIXI.DisplayObjectContainer()
 
   @COLORS = ['blue', 'orange', 'pink', 'purple', 'red', 'yellow']
 
@@ -49,6 +51,12 @@ class PrismApp.Assets
   @powerupTextureFromType: (type) ->
     index = @TYPES.indexOf(type)
     @powerupTextures[index]
+
+  @powerupFromPlayer: (type,color) ->
+    index1 = @COLORS.indexOf(color)
+    index2 = @TYPES.indexOf(type)
+    @playerPowerupTextures[index1][index2]
+
 
   @onAssetsLoaded: =>
     for i in [0..2]
@@ -90,8 +98,6 @@ class PrismApp.Assets
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("fade-player-#{i}_#{num}.png")
     
-      
-      
       death[i-1] = for j in [0..23]
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("death-#{i}_#{num}.png")
@@ -105,7 +111,10 @@ class PrismApp.Assets
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("powerup-#{i}_#{num}.png")
 
-      
+    for i in [1..6]   
+      @playerPowerupTextures[i-1] = for j in [1..4]
+        PIXI.Texture.fromFrame("player_#{i}_powerup_#{j}.png")
+
     for textureList in textures
       mc = new PIXI.MovieClip(textureList)
       mc.position.x = 250

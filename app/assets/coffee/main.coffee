@@ -7,7 +7,7 @@ window.globals =
 
 class PrismApp.Main
 	constructor: ->
-		assetsToLoader = (["images/anim/prism_sprites.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death-1.json","images/anim/death-2.json","images/anim/death-3.json","images/anim/death-4.json","images/anim/death-5.json","images/anim/death-6.json","images/anim/fade-player.json","images/anim/ghost-player.json","images/anim/player-ghost.json"])
+		assetsToLoader = (["images/anim/prism_sprites.json","images/anim/player-powerups.json","images/anim/spawn.json","images/anim/world-spawn.json","images/anim/death-1.json","images/anim/death-2.json","images/anim/death-3.json","images/anim/death-4.json","images/anim/death-5.json","images/anim/death-6.json","images/anim/fade-player.json","images/anim/ghost-player.json","images/anim/player-ghost.json"])
 		loader = new PIXI.AssetLoader(assetsToLoader)
 		loader.onComplete = =>
 			PrismApp.Assets.onAssetsLoaded()
@@ -146,12 +146,16 @@ class PrismApp.Main
 
 				if powerup.type == "shield"
 					@player.shield = true
+					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
 				else if powerup.type == "invisible"
-					@player.visible = false
+					#@player.visible = false
+					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
 				else if powerup.type == "slow"
 					@player.velocity = 0
+					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
 				else if powerup.type == "fast"
 					@player.velocity = globals.MAX_VEL
+					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
 
 				@powerups.removeChild(powerup)
 				#powerup.visible = false
