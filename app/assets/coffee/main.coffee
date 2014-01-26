@@ -224,7 +224,7 @@ class PrismApp.Main
 
 		allPlayers = @allPlayers()
 
-		scale = .2
+		scale = 1
 		for player in allPlayers
 			absx = Math.abs(player.position.x) + player.width
 			absy = Math.abs(player.position.y) + player.height
