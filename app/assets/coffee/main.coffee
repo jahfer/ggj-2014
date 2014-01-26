@@ -39,6 +39,7 @@ class PrismApp.Main
 		@renderer = PIXI.autoDetectRenderer(globals.WIN_W,globals.WIN_H)
 
 		$('body').append(@renderer.view)
+
 		prismPosition = PrismApp.SpawnPoints.randomFor('prism')
 		@prism = new PrismApp.Prism(prismPosition.x, prismPosition.y)
 
@@ -46,34 +47,34 @@ class PrismApp.Main
 			obj = PrismApp.SpawnPoints.smallObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'small')
 			@obstacles.addChild(obstacle)
-
 		for i in [0..4]
 			obj = PrismApp.SpawnPoints.mediumObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'medium')
 			@obstacles.addChild(obstacle)
-
 		for i in [0..7]
 			obj = PrismApp.SpawnPoints.largeObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
-		for i in [0..3]
-			obj = PrismApp.SpawnPoints.nextPowerup()
-			powerup = new PrismApp.Powerup(obj.x, obj.y,'fast')
-			@powerups.addChild(powerup)
 
-		for i in [3..6]
-			obj = PrismApp.SpawnPoints.nextPowerup()
-			powerup = new PrismApp.Powerup(obj.x, obj.y,'slow')
-			@powerups.addChild(powerup)
-		for i in [6..10]
-			obj = PrismApp.SpawnPoints.nextPowerup()
-			powerup = new PrismApp.Powerup(obj.x, obj.y,'invisible')
-			@powerups.addChild(powerup)
+		# for i in [0..3]
+		# 	obj = PrismApp.SpawnPoints.nextPowerup()
+		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'fast')
+		# 	@powerups.addChild(powerup)
+		# for i in [3..6]
+		# 	obj = PrismApp.SpawnPoints.nextPowerup()
+		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'slow')
+		# 	@powerups.addChild(powerup)
+		# for i in [6..9]
+		# 	obj = PrismApp.SpawnPoints.nextPowerup()
+		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'invisible')
+		# 	@powerups.addChild(powerup)
 
 		@world.addChild(@obstacles)
 		@world.addChild(@player)
 		@world.addChild(@otherPlayers)
+
 		@world.addChild(@prism)
+
 		@world.addChild(@powerups)
 		@world.addChild(PrismApp.Assets.spawns)
 		@world.addChild(PrismApp.Assets.playerGhosts)
@@ -108,8 +109,20 @@ class PrismApp.Main
 				newPlayer.id = id
 				@otherPlayers.addChild(newPlayer)
 
+			for id, data of data.powerups
+				console.log "Initializing existing powerup #{id}"
+				powerup = new PrismApp.Powerup(data.powerup.x, data.powerup.y, data.type)
+				powerup.id = id
+				@powerups.addChild(powerup)
+
 			PrismApp.Socket.emit 'user:registered', @player.toJSON()
 			requestAnimFrame(@draw)
+
+		PrismApp.Socket.on 'powerup:new', (data) =>
+			console.log "Powerup #{data.id} added"
+			powerup = new PrismApp.Powerup(data.x, data.y, 'fast')
+			powerup.id = data.id
+			@powerups.addChild(powerup)
 
 		PrismApp.Socket.on 'user:new', (player) =>
 			console.log "User #{player.id} connected"
@@ -119,44 +132,40 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:disconnect', (id) =>
 			console.log "User #{id} disconnected"
-			disconnectedPlayer = @otherPlayers.children.filter (player) -> id == player.id
-			@otherPlayers.removeChild(disconnectedPlayer[0])
+			disconnectedPlayer = (@otherPlayers.children.filter (player) -> id == player.id)[0]
+			@otherPlayers.removeChild(disconnectedPlayer)
 
 		PrismApp.Socket.on 'user:ghost:on', (player) =>
-      console.log "User #{player.id} is the ghost"
-      newGhost = @otherPlayers.children.filter (player) -> id == player.id
-      newGhost[0].toGhost()
+			console.log "User #{player.id} is the ghost"
+			newGhost = (@otherPlayers.children.filter (player) -> id == player.id)[0]
+			newGhost.toGhost()
+
+		PrismApp.Socket.on 'user:collect:powerup', (data) =>
+			player = (@otherPlayers.children.filter (player) -> data.id == player.id)[0]
+			player.applyPowerup(data.type)
+			powerup = (@powerups.children.filter (powerup) -> data.powerup_id == powerup.id)[0]
+			@powerups.removeChild(powerup)
 
 	updatePlayers: ->
 		@updatePlayer(player) for player in @otherPlayers.children
 		@updatePlayer(@player)
+		@checkCollision(@player)
 
 	initCollision: ->
 		@isColliding = true
 		setTimeout (=> @isColliding = false), 20
 
 	updatePlayer: (player) ->
-		hasCollided = false
 		player.move()
 
+	checkCollision: (player) ->
+		hasCollided = false
 		if !hasCollided && !@isColliding
 			powerup = PrismApp.Collisions.oneToManyCollisionCheck(player, @powerups.children)
 			if powerup?
 				hasCollided = true
-
-				if powerup.type == "shield"
-					@player.shield = true
-					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
-				else if powerup.type == "invisible"
-					#@player.visible = false
-					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
-				else if powerup.type == "slow"
-					@player.velocity = 0
-					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
-				else if powerup.type == "fast"
-					@player.velocity = globals.MAX_VEL
-					@player.setTexture(PrismApp.Assets.powerupFromPlayer(powerup.type,@player.color))
-
+				PrismApp.Socket.emit("user:collect:powerup", powerup.toJSON())
+				@player.applyPowerup(powerup.type)
 				@powerups.removeChild(powerup)
 				#powerup.visible = false
 

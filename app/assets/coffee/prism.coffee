@@ -30,4 +30,3 @@ class PrismApp.Prism extends PrismApp.Renderable
 			console.log("finished anim")
 			# prismAnim.visible = false
 		prismAnim.gotoAndPlay(0)
-

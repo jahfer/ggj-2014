@@ -9,10 +9,6 @@ reloadColorQueue = function() {
 
 module.exports = {
   nextColor: function() {
-    console.log('colorList: ', colorList)
-    console.log('colorQueue:', colorQueue)
-    console.log('usedColors:', usedColors)
-
     if (colorQueue.length == 0) reloadColorQueue()
 
     nextColor = colorQueue.shift()

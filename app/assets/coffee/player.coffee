@@ -85,3 +85,16 @@ class PrismApp.Player extends PrismApp.Renderable
 	timer: ->
 		console.log("timer called")
 
+	applyPowerup: (type) ->
+		if type == "shield"
+			@shield = true
+		else if type == "invisible"
+			#@player.visible = false
+		else if type == "slow"
+			@velocity = 0
+		else if type == "fast"
+			@velocity = globals.MAX_VEL
+
+		@setTexture(PrismApp.Assets.powerupFromPlayer(type, @color))
+
+
