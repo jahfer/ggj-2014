@@ -183,7 +183,7 @@ class PrismApp.Main
 		@spawn5.anchor.y = .5
 		@spawn5.animationSpeed = .5
 		@spawn5.loop = false
-		#@spawn5.play()
+		@spawn5.play()
 		spawn6 = new PIXI.MovieClip(@spawnTextures6)
 		spawn6.position.x = 250
 		spawn6.position.y = 250
@@ -349,7 +349,7 @@ class PrismApp.Main
 	scaleMap: (center) ->
 		cx = (globals.WIN_W/2) + Math.abs(center.x) * @world.scale.x
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * @world.scale.y
-		scale = .1
+		scale = .8
 
 		allPlayers = @allPlayers()
 
