@@ -22,15 +22,17 @@ class PrismApp.Main
 		count = 0
 
 		@stage = new PIXI.Stage(0x000000)
+		background = new PIXI.Sprite(PIXI.Texture.fromImage("images/map.jpg"))
 		@world = new PIXI.DisplayObjectContainer()
 		@obstacles = new PIXI.DisplayObjectContainer()
 		@otherPlayers = new PIXI.DisplayObjectContainer()
 		@powerups = new PIXI.DisplayObjectContainer()
+		@world.addChild(background)
 
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
 		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'red', true)
 		@player.visible = false
-		@textSample = new PIXI.Text("points "+@player.points, {font: "15px Arial", fill: "white", align: "left"})
+		@textSample = new PIXI.Text("points " + @player.points, {font: "15px Arial", fill: "white", align: "left"})
 		@textSample.position.x = 120
 		@textSample.position.y = 20
 
