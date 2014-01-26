@@ -72,10 +72,11 @@ class PrismApp.Main
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
 			@player.id = data.id
+			@player.setTexture(PrismApp.Assets.playerTextureFromColor(data.color))
 
 			for id, player of data.players
 				console.log "Initialized existing user #{id}"
-				newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
+				newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, player.color)
 				newPlayer.id = id
 				@otherPlayers.addChild(newPlayer)
 
@@ -84,7 +85,7 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:new', (player) =>
 			console.log "User #{player.id} connected"
-			newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, 'yellow')
+			newPlayer = new PrismApp.Player(player.position.x, player.position.y, player.rotation, player.color)
 			newPlayer.id = player.id
 			@otherPlayers.addChild(newPlayer)
 

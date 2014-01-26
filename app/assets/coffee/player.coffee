@@ -9,6 +9,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		@moveV = new PIXI.Point(0,0)
 		@bindKeys('W', 'S', 'A', 'D') if active
 		@isGhost = false
+		@color = color
 		@rotation = rotation
 
 	bindEvents: ->
@@ -60,3 +61,4 @@ class PrismApp.Player extends PrismApp.Renderable
 		velocity: @velocity
 		rotation: @rotation
 		moveV: @moveV
+		color: @color

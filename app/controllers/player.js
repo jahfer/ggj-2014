@@ -1,9 +1,12 @@
+var colors = require('../helpers/colors')
+
 var nextId = 1;
 var allPlayers = {};
 
 module.exports = {
   register: function(socket) {
-    payload = {id: socket.id, players: allPlayers}
+
+    payload = {id: socket.id, color: colors.nextColor(), players: allPlayers}
     socket.emit('user:register', payload)
 
     console.log("All players:", allPlayers)
