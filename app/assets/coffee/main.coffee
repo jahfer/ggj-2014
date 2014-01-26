@@ -167,7 +167,7 @@ class PrismApp.Main
 	scaleMap: (center) ->
 		cx = (globals.WIN_W/2) + Math.abs(center.x) * @world.scale.x
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * @world.scale.y
-		scale = 0.7
+		scale = .8
 
 		allPlayers = @allPlayers()
 
