@@ -16,7 +16,7 @@ module.exports = {
       socket.broadcast.emit('user:new', data);
     });
 
-    eventsToRelay = ['user:move:up', 'user:move:down', 'user:move:left', 'user:move:right'];
+    eventsToRelay = ['user:ghost:on', 'user:move:up', 'user:move:down', 'user:move:left', 'user:move:right'];
 
     eventsToRelay.forEach(function(evt) {
       socket.on(evt, function(data) {

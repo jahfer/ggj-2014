@@ -18,30 +18,30 @@ class PrismApp.Player extends PrismApp.Renderable
 
 	bindEvents: ->
 		PrismApp.Socket.on 'user:move:up', (data) =>
-			@moveUp() if data.id == @id
+			@fromJSON(data) if data.id == @id
 		PrismApp.Socket.on 'user:move:down', (data) =>
-			@moveDown() if data.id == @id
+			@fromJSON(data) if data.id == @id
 		PrismApp.Socket.on 'user:move:left', (data) =>
-			@moveLeft() if data.id == @id
+			@fromJSON(data) if data.id == @id
 		PrismApp.Socket.on 'user:move:right', (data) =>
-			@moveRight() if data.id == @id
+			@fromJSON(data) if data.id == @id
 
 	bindKeys: (up, down, left, right) ->
 		kd[up].down =>
-			@moveUp()
 			PrismApp.Socket.emit 'user:move:up', @toJSON()
+			@moveUp()
 
 		kd[down].down =>
-			@moveDown()
 			PrismApp.Socket.emit 'user:move:down', @toJSON()
+			@moveDown()
 
 		kd[left].down =>
-			@moveLeft()
 			PrismApp.Socket.emit 'user:move:left', @toJSON()
+			@moveLeft()
 
 		kd[right].down =>
-			@moveRight()
 			PrismApp.Socket.emit 'user:move:right', @toJSON()
+			@moveRight()
 
 	moveUp: ->
 		@velocity += 0.1 if @velocity < globals.MAX_VEL
@@ -67,10 +67,21 @@ class PrismApp.Player extends PrismApp.Renderable
 		moveV: @moveV
 		color: @color
 
+	fromJSON: (data) ->
+		@id = data.id
+		@anchor = data.anchor
+		@position = data.position
+		@velocity = data.velocity
+		@rotation = data.rotation
+		@moveV = data.moveV
+		@color = data.color
+
 	toGhost: ->
 		@setTexture(PrismApp.Assets.ghostTextureFromColor(@color))
 		@anchor.y = 0.8
+		PrismApp.Socket.emit('user:ghost:on', @toJSON())
 		@timer()
+
 	timer: ->
 		console.log("timer called")
 
