@@ -83,13 +83,20 @@ var nextPowerup = function() {
 
   var randomIndex = Math.floor(Math.random() * spawnPositions['powerupList'].length);
   var nextPowerup = powerupQueue[randomIndex];
-  usedPowerups.push(nextPowerup);
+  usedPowerups[randomIndex] = nextPowerup;
 
   randomType = Math.floor(Math.random() * powerupTypes.length)
 
   return {id: randomIndex, powerup: nextPowerup, type: powerupTypes[randomType]};
 };
 
+var removePowerup = function(id) {
+  powerupQueue[id] = usedPowerups[id];
+  delete usedPowerups[id];
+}
+
 module.exports = {
-  nextPowerup: nextPowerup
+  nextPowerup: nextPowerup,
+  removePowerup: removePowerup,
+  randomFor: randomFor
 }

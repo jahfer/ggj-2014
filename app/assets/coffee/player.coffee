@@ -66,6 +66,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		rotation: @rotation
 		moveV: @moveV
 		color: @color
+		isGhost: @isGhost
 
 	fromJSON: (data) ->
 		@id = data.id
@@ -75,12 +76,29 @@ class PrismApp.Player extends PrismApp.Renderable
 		@rotation = data.rotation
 		@moveV = data.moveV
 		@color = data.color
+		@isGhost = data.isGhost
 
 	toGhost: ->
+		@isGhost = true
+		@visible = false
+		debugger
 		@setTexture(PrismApp.Assets.ghostTextureFromColor(@color))
 		@anchor.y = 0.8
-		PrismApp.Socket.emit('user:ghost:on', @toJSON())
 		@timer()
+
+		ghostAnim = PrismApp.Assets.ghostFromPlayer(@color)
+		ghostAnim.visible = true
+		ghostAnim.position = @position
+		ghostAnim.rotation = @rotation
+		ghostAnim.onComplete = =>
+			@visible = true
+			ghostAnim.visible = false
+		ghostAnim.play()
+
+	toRegular: ->
+		@isGhost = false
+		@reloadTexture()
+		@anchor.y = 0.5
 
 	timer: ->
 		console.log("timer called")
@@ -89,7 +107,7 @@ class PrismApp.Player extends PrismApp.Renderable
 		if type == "shield"
 			@shield = true
 		else if type == "invisible"
-			#@player.visible = false
+			@visible = false
 		else if type == "slow"
 			@velocity = 0
 		else if type == "fast"

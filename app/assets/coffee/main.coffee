@@ -40,9 +40,6 @@ class PrismApp.Main
 
 		$('body').append(@renderer.view)
 
-		prismPosition = PrismApp.SpawnPoints.randomFor('prism')
-		@prism = new PrismApp.Prism(prismPosition.x, prismPosition.y)
-
 		for i in [0..3]
 			obj = PrismApp.SpawnPoints.smallObject[i]
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'small')
@@ -56,24 +53,9 @@ class PrismApp.Main
 			obstacle = new PrismApp.Obstacle(0.5,0.5, obj.x, obj.y, obj.rot,'large')
 			@obstacles.addChild(obstacle)
 
-		# for i in [0..3]
-		# 	obj = PrismApp.SpawnPoints.nextPowerup()
-		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'fast')
-		# 	@powerups.addChild(powerup)
-		# for i in [3..6]
-		# 	obj = PrismApp.SpawnPoints.nextPowerup()
-		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'slow')
-		# 	@powerups.addChild(powerup)
-		# for i in [6..9]
-		# 	obj = PrismApp.SpawnPoints.nextPowerup()
-		# 	powerup = new PrismApp.Powerup(obj.x, obj.y,'invisible')
-		# 	@powerups.addChild(powerup)
-
 		@world.addChild(@obstacles)
 		@world.addChild(@player)
 		@world.addChild(@otherPlayers)
-
-		@world.addChild(@prism)
 
 		@world.addChild(@powerups)
 		@world.addChild(PrismApp.Assets.spawns)
@@ -100,6 +82,10 @@ class PrismApp.Main
 				@player.visible = true
 				spawnAnim.visible = false
 			spawnAnim.play()
+
+			console.log("Prism Position on init", data.prism)
+			@prism = new PrismApp.Prism(data.prism.x, data.prism.y)
+			@world.addChild(@prism)
 
 			@player.reloadTexture()
 
@@ -137,7 +123,8 @@ class PrismApp.Main
 
 		PrismApp.Socket.on 'user:ghost:on', (player) =>
 			console.log "User #{player.id} is the ghost"
-			newGhost = (@otherPlayers.children.filter (player) -> id == player.id)[0]
+			newGhost = (@otherPlayers.children.filter (other) -> player.id == other.id)[0]
+			@allPlayers().forEach (other) -> other.toRegular()
 			newGhost.toGhost()
 
 		PrismApp.Socket.on 'user:collect:powerup', (data) =>
@@ -145,6 +132,11 @@ class PrismApp.Main
 			player.applyPowerup(data.type)
 			powerup = (@powerups.children.filter (powerup) -> data.powerup_id == powerup.id)[0]
 			@powerups.removeChild(powerup)
+
+		PrismApp.Socket.on 'prism:new', (position) =>
+			console.log("Prism Position for new", position)
+			@prism.position.x = position.x
+			@prism.position.y = position.y
 
 	updatePlayers: ->
 		@updatePlayer(player) for player in @otherPlayers.children
@@ -166,6 +158,7 @@ class PrismApp.Main
 				hasCollided = true
 				PrismApp.Socket.emit("user:collect:powerup", powerup.toJSON())
 				@player.applyPowerup(powerup.type)
+				@player.visible = true
 				@powerups.removeChild(powerup)
 				#powerup.visible = false
 
@@ -196,18 +189,10 @@ class PrismApp.Main
 				@prism.move()
 				@player.points += 10
 				@textSample.setText("Points "+@player.points)
-				@player.isGhost = true
-				@player.visible = false
-				ghostAnim = PrismApp.Assets.ghostFromPlayer(@player.color)
-				ghostAnim.visible = true
-				ghostAnim.position = @player.position
-				ghostAnim.rotation = @player.rotation
-				ghostAnim.onComplete = =>
-					@player.visible = true
-					ghostAnim.visible = false
-				ghostAnim.play()
 
+				PrismApp.Socket.emit('user:ghost:on', @player.toJSON())
 				@player.toGhost()
+
 				@otherPlayers.children.forEach (player) -> player.isGhost = false
 				console.log("collision with prism!")
 
