@@ -3,6 +3,7 @@ class PrismApp.Assets
   @ghostTextures = []
   @obstacleTextures = []
   @powerupTextures = []
+  @prismTextures = []
 
   @spawnClips = []
   @playerGhostClips = []
@@ -65,6 +66,7 @@ class PrismApp.Assets
       @playerTextures.push(texture)
 
     textures = []
+    prism = []
     playerGhost = []
     ghostPlayer = []
     fadePlayer = []
@@ -88,15 +90,22 @@ class PrismApp.Assets
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("fade-player-#{i}_#{num}.png")
     
+      
+      
+      death[i-1] = for j in [0..23]
+        num = ("00" + j).slice(-3) 
+        PIXI.Texture.fromFrame("death-#{i}_#{num}.png")
+    
+    prism = for j in [0..26]
+        num = ("00" + j).slice(-3) 
+        PIXI.Texture.fromFrame("prism-spawn_#{num}.png")
+    
     for i in [1..4]
       powerup[i-1] = for j in [0..26]
         num = ("00" + j).slice(-3) 
         PIXI.Texture.fromFrame("powerup-#{i}_#{num}.png")
 
-      # death[i-1] = for j in [0..26]
-      #   num = ("00" + j).slice(-3) 
-      #   PIXI.Texture.fromFrame("death-#{i}_#{num}.png")
-
+      
     for textureList in textures
       mc = new PIXI.MovieClip(textureList)
       mc.position.x = 250
@@ -155,13 +164,24 @@ class PrismApp.Assets
       mc.loop = false
       @powerupClips.push(mc)
       @powerups.addChild(mc)
-    # for deathList in death
-    #   mc = new PIXI.MovieClip(deathList)
-    #   mc.position.x = 250
-    #   mc.position.y = 250
-    #   mc.anchor.x = .5
-    #   mc.anchor.y = .5
-    #   mc.animationSpeed = .5
-    #   mc.loop = false
-    #   @deathClips.push(mc)
-    #   @deaths.addChild(mc)
+
+    for deathList in death
+      mc = new PIXI.MovieClip(deathList)
+      mc.position.x = 250
+      mc.position.y = 250
+      mc.anchor.x = .5
+      mc.anchor.y = .5
+      mc.animationSpeed = .5
+      mc.loop = false
+      @deathClips.push(mc)
+      @deaths.addChild(mc)
+
+    @prismClip = new PIXI.MovieClip(prism)
+    @prismClip.position.x = 250
+    @prismClip.position.y = 250
+    @prismClip.anchor.x = .5
+    @prismClip.anchor.y = .5
+    @prismClip.animationSpeed = .5
+    @prismClip.loop = false
+    @prismClip.visible = false
+      

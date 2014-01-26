@@ -75,9 +75,9 @@ class PrismApp.Main
 		@world.addChild(@otherPlayers)
 		@world.addChild(@prism)
 		@world.addChild(@powerups)
-
 		@world.addChild(PrismApp.Assets.spawns)
 		@world.addChild(PrismApp.Assets.playerGhosts)
+		@world.addChild(PrismApp.Assets.prismClip)
 		# @world.addChild(PrismApp.Assets.ghostPlayers)
 		# @world.addChild(PrismApp.Assets.fadePlayers)
 		# @world.addChild(PrismApp.Assets.deaths)
@@ -224,7 +224,7 @@ class PrismApp.Main
 
 		allPlayers = @allPlayers()
 
-		scale = 1
+		scale = .2
 		for player in allPlayers
 			absx = Math.abs(player.position.x) + player.width
 			absy = Math.abs(player.position.y) + player.height

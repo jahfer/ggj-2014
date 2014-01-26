@@ -85,10 +85,6 @@ class PrismApp.SpawnPoints
     
 
     @nextPowerup: ->
-        console.log('poweruplist: ', @powerupList)
-        console.log('powerupQueue:', @powerupQueue)
-        console.log('usedPowerups:', @usedPowerups)
-
         if @powerupQueue.length == 0
             @reloadPowerupQueue()
 
