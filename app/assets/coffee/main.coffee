@@ -153,14 +153,15 @@ class PrismApp.Main
 	checkCollision: (player) ->
 		hasCollided = false
 		if !hasCollided && !@isColliding
-			powerup = PrismApp.Collisions.oneToManyCollisionCheck(player, @powerups.children)
-			if powerup?
-				hasCollided = true
-				PrismApp.Socket.emit("user:collect:powerup", powerup.toJSON())
-				@player.applyPowerup(powerup.type)
-				@player.visible = true
-				@powerups.removeChild(powerup)
-				#powerup.visible = false
+			if !player.isGhost
+				powerup = PrismApp.Collisions.oneToManyCollisionCheck(player, @powerups.children)
+				if powerup?
+					hasCollided = true
+					PrismApp.Socket.emit("user:collect:powerup", powerup.toJSON())
+					@player.applyPowerup(powerup.type)
+					@player.visible = true
+					@powerups.removeChild(powerup)
+					#powerup.visible = false
 
 			obstacle = PrismApp.Collisions.oneToManyCollisionCheck(player, @obstacles.children)
 			if obstacle?
@@ -215,7 +216,7 @@ class PrismApp.Main
 			else if playerHit? && player.isGhost == true && @player.shield == false
 				console.log("you are killed")
 			else if playerHit?
-				console.log("you hit each other and nothing happens")	
+				console.log("you hit each other and nothing happens")
 
 	allPlayers: -> [@player].concat(@otherPlayers.children)
 
