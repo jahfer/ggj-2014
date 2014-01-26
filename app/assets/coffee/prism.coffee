@@ -15,11 +15,10 @@ class PrismApp.Prism extends PrismApp.Renderable
 		@owner
 
 	move: ->
-		@position.x = Math.floor(Math.random() * (globals.WIN_W - 150 + 1)) + 100
-		@position.y = Math.floor(Math.random() * (globals.WIN_H - 150 + 1)) + 100
-
-		# prismPosition = @prismRespondPoints[Math.floor(Math.random() * @prismRespondPoints.length)]
-		# @position.x = prismPosition.x
-		# @position.y = prismPosition.y
+		#@position.x = Math.floor(Math.random() * (globals.WIN_W - 150 + 1)) + 100
+		#@position.y = Math.floor(Math.random() * (globals.WIN_H - 150 + 1)) + 100
+		prismPosition = PrismApp.SpawnPoints.randomFor('prism')
+		@position.x = prismPosition.x
+		@position.y = prismPosition.y
 
 

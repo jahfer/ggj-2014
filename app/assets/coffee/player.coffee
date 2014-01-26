@@ -68,4 +68,5 @@ class PrismApp.Player extends PrismApp.Renderable
 
 	toGhost: ->
 		@setTexture(PrismApp.Assets.ghostTextureFromColor(@color))
- 
+		@anchor.y = 0.8
+

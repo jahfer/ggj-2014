@@ -30,7 +30,7 @@ class PrismApp.Main
 
 		playerPosition = PrismApp.SpawnPoints.randomFor('player')
 		@player = new PrismApp.Player(playerPosition.x, playerPosition.y, playerPosition.rot, 'red', true)
-
+		@player.visible = false
 		@textSample = new PIXI.Text("points "+@player.points, {font: "15px Arial", fill: "white", align: "left"})
 		@textSample.position.x = 120
 		@textSample.position.y = 20
@@ -66,13 +66,20 @@ class PrismApp.Main
 
 		@minBound = new PIXI.Point(0,0)
 		@maxBound = new PIXI.Point(0,0)
-
-		@stage.addChild(PrismApp.Assets.spawnClips[0])
+		@world.addChild(PrismApp.Assets.spawns)
 
 	bindEvents: ->
 		PrismApp.Socket.on 'user:register', (data) =>
 			@player.id = data.id
 			@player.color = data.color
+			spawnAnim = PrismApp.Assets.playerSpawnFromColor(@player.color)
+			spawnAnim.position = @player.position
+			spawnAnim.rotation = @player.rotation
+			spawnAnim.onComplete = => 
+				@player.visible = true 
+				spawnAnim.visible = false	
+			spawnAnim.play()
+
 			@player.reloadTexture()
 
 			for id, player of data.players

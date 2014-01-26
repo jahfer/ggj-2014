@@ -3,6 +3,7 @@ class PrismApp.Assets
   @ghostTextures = []
   @obstacleTextures = []
   @spawnClips = []
+  @spawns = new PIXI.DisplayObjectContainer()
 
   @deathTextures6 = []
 
@@ -21,6 +22,10 @@ class PrismApp.Assets
   @ghostTextureFromColor: (color) ->
     index = @COLORS.indexOf(color)
     @ghostTextures[index]
+
+  @playerSpawnFromColor: (color) ->
+    index = @COLORS.indexOf(color)
+    @spawnClips[index]
 
   @onAssetsLoaded: =>
     for i in [0..2]
@@ -46,10 +51,10 @@ class PrismApp.Assets
       mc.anchor.x = .5
       mc.anchor.y = .5
       mc.animationSpeed = .5
-      mc.loop = true
+      mc.loop = false
       @spawnClips.push(mc)
+      @spawns.addChild(mc)
 
-    @spawnClips[0].play()
 
 
     #   if i < 10
