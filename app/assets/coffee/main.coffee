@@ -55,19 +55,16 @@ class PrismApp.Main
 		@prism = new PrismApp.Prism(prismPosition.x, prismPosition.y)
 
 
-		for i in [1..smallObjectRespondPoints.length]
-			position = smallObjectRespondPoints[Math.floor(Math.random() * smallObjectRespondPoints.length)]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, position.x, position.y, position.rot)
+		for i in [0..3]
+			obstacle = new PrismApp.Obstacle(0.5,0.5, smallObjectRespondPoints[i].x, smallObjectRespondPoints[i].y, smallObjectRespondPoints[i].rot)
 			@obstacles.addChild(obstacle)
 
-		for i in [1..mediumObjectRespondPoints.length]
-			position = mediumObjectRespondPoints[Math.floor(Math.random() * mediumObjectRespondPoints.length)]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, position.x, position.Y, position.rot)
+		for i in [0..4]
+			obstacle = new PrismApp.Obstacle(0.5,0.5, mediumObjectRespondPoints[i].x, mediumObjectRespondPoints[i].y, mediumObjectRespondPoints[i].rot)
 			@obstacles.addChild(obstacle)
 
-		for i in [1..largeObjectRespondPoints.length]
-			position = largeObjectRespondPoints[Math.floor(Math.random() * largeObjectRespondPoints.length)]
-			obstacle = new PrismApp.Obstacle(0.5,0.5, position.x, position.Y, position.rot)
+		for i in [0..3]
+			obstacle = new PrismApp.Obstacle(0.5,0.5, largeObjectRespondPoints[i].x, largeObjectRespondPoints[i].y, largeObjectRespondPoints[i].rot)
 			@obstacles.addChild(obstacle)
 
 		@world.addChild(@obstacles)
@@ -351,7 +348,7 @@ class PrismApp.Main
 	scaleMap: (center) ->
 		cx = (globals.WIN_W/2) + Math.abs(center.x) * @world.scale.x
 		cy = (globals.WIN_H/2) + Math.abs(center.y) * @world.scale.y
-		scale = 1
+		scale = .1
 
 		allPlayers = @allPlayers()
 
