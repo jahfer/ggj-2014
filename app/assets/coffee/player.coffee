@@ -2,7 +2,7 @@ class PrismApp.Player extends PrismApp.Renderable
 
 	texture: PIXI.Texture.fromImage("images/player_red.png")
 	
-	constructor: (anchorX, anchorY, posX, posY, active = false) ->
+	constructor: (anchorX, anchorY, posX, posY, rotation, active = false) ->
 		anchor = {x: anchorX, y: anchorY}
 		position = {x: posX, y: posY}
 		super(@texture, anchor, position)
@@ -10,7 +10,9 @@ class PrismApp.Player extends PrismApp.Renderable
 		@velocity = 0
 		@moveV = new PIXI.Point(0,0)
 		@bindKeys('W', 'S', 'A', 'D') if active
-
+		@isGhost = false
+		@rotation = rotation 
+	
 	bindEvents: ->
 		PrismApp.Socket.on 'user:move:up', (data) =>
 			@moveUp() if data.id == @id
